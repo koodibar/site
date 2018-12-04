@@ -1,6 +1,4 @@
-# gatsby-casper
-
-Demo: https://gatsby-casper.netlify.com/  
+# [koodibar](https://koodibar.netlify.com)
 
 This is a static blog generator and starter gatsby repo. A port of [Casper](https://github.com/TryGhost/Casper) v2 a theme from [Ghost](https://ghost.org/) for [GatsbyJS](https://www.gatsbyjs.org/) using [TypeScript](https://www.typescriptlang.org/).
 
@@ -29,4 +27,4 @@ Either disable subscribe or setup a mailchimp list and add the form action and h
 
 ### Deploy to Netlify
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/scttcper/gatsby-casper)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/koodibar/site
