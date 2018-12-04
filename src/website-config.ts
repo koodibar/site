@@ -24,8 +24,8 @@ export interface WebsiteConfig {
 }
 
 const config: WebsiteConfig = {
-  title: 'Ghost',
-  description: 'The professional publishing platform',
+  title: 'Koodibar',
+  description: 'Koodibar - The code bar',
   coverImage: 'img/blog-cover.jpg',
   logo: 'img/ghost-logo.png',
   siteUrl: 'https://gatsby-casper.netlify.com',
