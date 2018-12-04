@@ -6,7 +6,6 @@ module.exports = {
     description: 'Koodibar - The code bar',
     siteUrl: 'https://koodibar.netlify.com', // full path to blog - no ending slash
   },
-  pathPrefix: `/bai-viet`,
   mapping: {
     'MarkdownRemark.frontmatter.author': 'AuthorYaml',
   },
