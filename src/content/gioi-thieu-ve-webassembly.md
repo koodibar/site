@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Giới thiệu về WebAssembly" 
+title: "Giới thiệu về WebAssembly"
 author: Hung Neo
 tags: ["WebAssembly"]
 image: img/webbrowser.jpg
@@ -48,7 +48,7 @@ Hầu như từ trước đến giờ, cái máy ảo trong trình duyệt chỉ
 
 Nói về tốc độ thực thi và hiệu năng, thì trên trang Hỏi-Đáp của WebAssembly cũng có nói rằng, WebAssembly được phân-tích cú-pháp (parse) nhanh hơn JavaScript 20 lần.
 
-> The kind of binary format being considered for WebAssembly can be natively decoded much faster than JavaScript can be parsed (experiments show more than 20× faster). On mobile, large compiled codes can easily take 20–40 seconds just to parse, so native decoding (especially when combined with other techniques like streaming for better-than-gzip compression) is critical to providing a good cold-load user experience. 
+> The kind of binary format being considered for WebAssembly can be natively decoded much faster than JavaScript can be parsed (experiments show more than 20× faster). On mobile, large compiled codes can easily take 20–40 seconds just to parse, so native decoding (especially when combined with other techniques like streaming for better-than-gzip compression) is critical to providing a good cold-load user experience.
 
 Nguồn: [WebAssembly FAQ](https://webassembly.org/docs/faq/)
 
@@ -106,7 +106,7 @@ fetch("hello.wasm").then(reponse =>
 );
 ```
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -120,7 +120,7 @@ fetch("hello.wasm").then(reponse =>
 </body>
 </html>
 ```
-* Ngoài ra chúng ta có thể vọc thử WebAssembly trên [WebAssembly Explorer](https://mbebenita.github.io/WasmExplorer/). 
+* Ngoài ra chúng ta có thể vọc thử WebAssembly trên [WebAssembly Explorer](https://mbebenita.github.io/WasmExplorer/).
 
 # Tham khảo
 

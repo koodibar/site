@@ -21,6 +21,12 @@ export interface WebsiteConfig {
    * this is the hidden input field name
    */
   mailchimpName?: string;
+
+  /**
+   * Font setup
+   */
+  fontFamily: string;
+  fontMonoFamily: string;
 }
 
 const config: WebsiteConfig = {
@@ -34,6 +40,8 @@ const config: WebsiteConfig = {
   showSubscribe: true,
   mailchimpAction: 'https://twitter.us19.list-manage.com/subscribe/post?u=a89b6987ac248c81b0b7f3a0f&amp;id=7d777b7d75',
   mailchimpName: 'b_a89b6987ac248c81b0b7f3a0f_7d777b7d75',
+  fontFamily: "'Noto Sans', sans-serif",
+  fontMonoFamily: "'Inconsolata', monospace",
 };
 
 export default config;
