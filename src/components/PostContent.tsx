@@ -12,7 +12,7 @@ export const PostFullContent = styled.section`
   padding: 70px 100px 0;
   min-height: 230px;
   font-family: ${config.fontFamily};
-  font-size: 2.2rem;
+  font-size: 2rem;
   line-height: 1.6em;
   background: #fff;
 
