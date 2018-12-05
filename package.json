@@ -1,9 +1,15 @@
 {
-  "name": "gatsby-casper",
-  "description": "Casper for gatsby",
+  "name": "koodibar",
+  "description": "Koodibar website",
   "version": "0.0.0",
   "private": true,
-  "author": "Scott Cooper <scttcper@gmail.com>",
+  "author": "Hung Neo <hungneox@gmail.com>",
+  "contributors": [
+    {
+      "name": "Cuong Nguyen",
+      "email": "cuongnt.hn@gmail.com"
+    }
+  ],
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
