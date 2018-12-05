@@ -7,6 +7,7 @@ import * as React from 'react';
 import styled, { css } from 'react-emotion';
 import { colors } from '../styles/colors';
 import { PageContext } from '../templates/post';
+import config from '../website-config';
 
 const PostCardStyles = css`
   flex: 1 1 300px;
@@ -77,7 +78,7 @@ const PostCardTitle = styled.h2`
 `;
 
 const PostCardExcerpt = styled.section`
-  font-family: Georgia, serif;
+  font-family: ${config.fontFamily};
 `;
 
 const PostCardMeta = styled.footer`

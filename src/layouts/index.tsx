@@ -3,9 +3,14 @@ import { darken, lighten } from 'polished';
 import * as React from 'react';
 
 import { colors } from '../styles/colors';
+import config from '../website-config';
 
 // tslint:disable-next-line:no-unused-expression
 injectGlobal`
+@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700&subset=vietnamese');
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,700&subset=vietnamese');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/prism/1.15.0/themes/prism-tomorrow.css');
+
 html,
 body,
 div,
@@ -117,7 +122,7 @@ img {
 }
 html {
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: ${config.fontFamily};
 
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -175,8 +180,10 @@ mark {
 code,
 kbd,
 pre,
-samp {
-  font-family: monospace, monospace;
+samp,
+code[class*="language-"],
+pre[class*="language-"] {
+  font-family: ${config.fontMonoFamily};
   font-size: 1em;
 }
 button,
@@ -184,9 +191,9 @@ input,
 optgroup,
 select,
 textarea {
-  margin: 0; 
-  color: inherit; 
-  font: inherit; 
+  margin: 0;
+  color: inherit;
+  font: inherit;
 }
 button {
   overflow: visible;
@@ -201,9 +208,9 @@ html input[type="button"],
 
 input[type="reset"],
 input[type="submit"] {
-  cursor: pointer; 
+  cursor: pointer;
 
-  -webkit-appearance: button; 
+  -webkit-appearance: button;
 }
 button[disabled],
 html input[disabled] {
@@ -222,25 +229,25 @@ input:focus {
 }
 input[type="checkbox"],
 input[type="radio"] {
-  box-sizing: border-box; 
-  padding: 0; 
+  box-sizing: border-box;
+  padding: 0;
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   height: auto;
 }
 input[type="search"] {
-  box-sizing: content-box; 
+  box-sizing: content-box;
 
-  -webkit-appearance: textfield; 
+  -webkit-appearance: textfield;
 }
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 legend {
-  padding: 0; 
-  border: 0; 
+  padding: 0;
+  border: 0;
 }
 textarea {
   overflow: auto;
@@ -265,7 +272,7 @@ body {
   overflow-x: hidden;
   /* color: color(var(--midgrey) l(-25%)); */
   color: ${darken('0.25', colors.midgrey)};
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: ${config.fontFamily};
   font-size: 1.5rem;
   line-height: 1.6em;
   font-weight: 400;

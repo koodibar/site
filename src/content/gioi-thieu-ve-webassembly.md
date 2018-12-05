@@ -106,7 +106,7 @@ fetch("hello.wasm").then(reponse =>
 );
 ```
 
-```
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
