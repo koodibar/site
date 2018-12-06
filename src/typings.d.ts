@@ -25,3 +25,12 @@ declare module 'rehype-react' {
   }
   export default RehypeReact;
 }
+
+declare module 'disqus-react' {
+  interface ReactDisqus {
+    DiscussionEmbed: any
+  }
+  const Disqus: ReactDisqus;
+
+  export = Disqus;
+}
