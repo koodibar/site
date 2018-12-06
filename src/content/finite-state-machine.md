@@ -20,7 +20,7 @@ _(Nystrom, 2014)_
 Đồ thị trên mô tả sơ bộ về một FSM, với 4 trạng thái là `Standing`, `Ducking`, `Jumping` và `Diving`, trạng thái bắt đầu có thể hiểu là `Standing` (trong game, nhân vật lúc nào cũng đứng yên chờ người chơi ấn nút) và các điều kiện để thay đổi từ trạng thái này sang trạng thái khác (với các nút bấm).
 
 ## Công dụng của Finite State Machine
-Điều tuyệt vời nhất của FSM là chúng ta luôn có một đồ thị tương ứng với thiết kế, vì vậy FSM giúp ta dễ dàng quản lý các dạng trạng thái của hệ thống mà không phải đào vào cả mớ flags. Chúng ta luôn biết hữu hạn các trạng thái mà hệ thống có thể đạt được dựa vào thiết kế của FSM mà không lo bỏ sót, đồng thời việc thêm hoặc bớt trạng thái rất đơn giản.
+Điều tuyệt vời nhất của FSM là chúng ta luôn có một đồ thị tương ứng với thiết kế, giúp chúng ta hình dung các trạng thái của hệ thống một cách dễ dàng. Chúng ta luôn biết hữu hạn các trạng thái mà hệ thống có thể đạt được dựa vào thiết kế của FSM mà không lo bỏ sót, đồng thời việc thêm hoặc bớt trạng thái rất đơn giản.
 
 Ví dụ ở đồ thị ở trên, muốn nhân vật vừa ngồi vừa dash như Rockman Zero, ta chỉ cần thêm trạng thái `Low Dashing` cạnh `Ducking` và thêm cái mũi tên từ `Ducking` sang `Low Dashing` với điều kiện `Press Y`.
 
@@ -281,7 +281,7 @@ const makePublishedState: State = () => {
 }
 ```
 
-Như vậy với mỗi trạng thái thì ta sẽ có một object implement `State trait` (ở đây ta hiểu là States cho Post FSM), và FSM này sẽ nhận và xử lý 2 hành động chính là `Proceed` và `Reject`. Hệ thống mỗi lần nhận 1 trong 2 hành động này sẽ delegate đến State hiện tại và State sẽ xử lý đồng thời trả lại State mới (vì vậy mới gọi là Finite). Như vậy ta không cần phải kiểm tra một loạt flags nữa, đồng thời muốn thêm một trạng thái mới cho bài viết, ví dụ Archive - trạng thái cho các bài viết đã published và quá cũ, ta chỉ cần thêm 1 object implement `State trait` và điều chỉnh action handlers cho `publishedState`, điều này giúp ta hoàn toàn không phải động vào các states còn lại, đảm bảo tính chính xác của hệ thống.
+Như vậy với mỗi trạng thái thì ta sẽ có một object implement `State trait` (ở đây ta hiểu là States cho Post FSM), và FSM này sẽ nhận và xử lý 2 hành động chính là `Proceed` và `Reject`. Hệ thống mỗi lần nhận 1 trong 2 hành động này sẽ delegate đến State hiện tại để xử lý đồng thời trả lại State mới. Như vậy ta không cần phải kiểm tra một loạt flags nữa, đồng thời muốn thêm một trạng thái mới cho bài viết, ví dụ Archive - trạng thái cho các bài viết đã published và quá cũ, ta chỉ cần thêm 1 object implement `State trait` và điều chỉnh action handlers cho `publishedState`, điều này giúp ta hoàn toàn không phải động vào các states còn lại, đảm bảo tính chính xác của hệ thống.
 
 Nếu muốn chuyển object Post ở trên thành dạng flatten, thích hợp cho gửi lên service, ta có thể thêm method `getStatus(): string` cho `State trait`, states sẽ trả lại status tương ứng cho post.
 
