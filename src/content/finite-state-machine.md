@@ -2,9 +2,9 @@
 layout: post
 title: "Finite State Machine trong web development"
 author: Dr.Yami
-tags: ["Programming"]
+tags: ["Theory"]
 image: img/vintage-cash-register.jpg
-date: "2018-12-06T18:00:00.000Z"
+date: "2018-12-06"
 ---
 
 ## Giới thiệu Finite State Machine
@@ -20,7 +20,7 @@ _(Nystrom, 2014)_
 Đồ thị trên mô tả sơ bộ về một FSM, với 4 trạng thái là `Standing`, `Ducking`, `Jumping` và `Diving`, trạng thái bắt đầu có thể hiểu là `Standing` (trong game, nhân vật lúc nào cũng đứng yên chờ người chơi ấn nút) và các điều kiện để thay đổi từ trạng thái này sang trạng thái khác (với các nút bấm).
 
 ## Công dụng của Finite State Machine
-Điều tuyệt vời nhất của FSM là chúng ta luôn có một đồ thị tương ứng với thiết kế, vì vậy FSM giúp ta dễ dàng quản lý các dạng trạng thái của hệ thống mà không phải đào vào vô vàn flags. Chúng ta luôn biết hữu hạn các trạng thái mà hệ thống có thể đạt được dựa vào thiết kế của FSM mà không lo bỏ sót, đồng thời việc thêm hoặc bớt trạng thái rất đơn giản.
+Điều tuyệt vời nhất của FSM là chúng ta luôn có một đồ thị tương ứng với thiết kế, vì vậy FSM giúp ta dễ dàng quản lý các dạng trạng thái của hệ thống mà không phải đào vào cả mớ flags. Chúng ta luôn biết hữu hạn các trạng thái mà hệ thống có thể đạt được dựa vào thiết kế của FSM mà không lo bỏ sót, đồng thời việc thêm hoặc bớt trạng thái rất đơn giản.
 
 Ví dụ ở đồ thị ở trên, muốn nhân vật vừa ngồi vừa dash như Rockman Zero, ta chỉ cần thêm trạng thái `Low Dashing` cạnh `Ducking` và thêm cái mũi tên từ `Ducking` sang `Low Dashing` với điều kiện `Press Y`.
 
@@ -85,9 +85,76 @@ const updateStatus = (post: Post, status: Status) => {
 };
 ```
 
-Vì cái updateStatus nó quá dài và phức tạp trong trường hợp này nên bài viết chỉ viết đến trường hợp bài viết đang chờ được review `In Review`. Vấn đề của cục code ở trên là nó quá dài, quá nhiều flags và khó để thêm bớt trạng thái, chưa kể nếu thêm vài cái flags vào nữa thì việc sót trường hợp là điều thường gặp, dẫn đến logic đi sai hướng (ví dụ tự nhiên từ Draft nhảy lên Published luôn thì rõ là tai hại).
+Vì cái `updateStatus` nó quá dài và phức tạp trong trường hợp này nên bài viết chỉ viết đến trường hợp bài viết đang chờ được review `In Review`. Vấn đề của cục code ở trên là nó quá dài, quá nhiều flags và khó để thêm bớt trạng thái, chưa kể nếu thêm vài cái flags vào nữa thì việc sót trường hợp là điều thường gặp, dẫn đến logic đi sai hướng (ví dụ tự nhiên từ Draft nhảy lên Published luôn thì rõ là tai hại).
 
-Vậy với FSM thì ta có thể viết lại như này:
+Để mọi thứ đơn giản hơn, ta có thể thay đống flags loằng ngoằng trên bằng một field duy nhất là `state` với type là `enum State`:
+```typescript
+enum State {
+  Draft,
+  InReview,
+  InVote,
+  Published
+}
+
+/**
+ * Post structure.
+ */
+interface Post {
+  uid: number;
+  title: string;
+
+  voteCount: number;
+  state: State;
+}
+
+/**
+ * Proceed action in FSM
+ */
+const proceedPost = (post: Post) => {
+  if (post.state === State.Draft) {
+    post.state = State.InReview;
+    return
+  }
+
+  if (post.state === State.InReview) {
+    post.state = State.InVote;
+    return
+  }
+
+  if (post.state === State.InVote) {
+    if (post.voteCount < 5) {
+      console.warn('Not enough vote to proceed')
+      return
+    }
+    post.state = State.Published;
+    return
+  }
+
+  console.warn('Cannot proceed more.')
+};
+
+/**
+ * Reject action in FSM
+ */
+const rejectPost = (post: Post) => {
+  /* same as above */
+};
+
+/**
+ * Delegate action for FSM
+ */
+const updatePost = (post: Post, action: "proceed" | "reject") => {
+  if (action === "proceed") {
+    proceedPost(post);
+  }
+
+  if (action === "reject") {
+    rejectPost(post);
+  }
+};
+```
+
+Nhìn mọi thứ đã rõ ràng và ngắn gọn hơn nhiều, tuy nhiên với một đống `if - else`, mọi thứ vẫn còn khá loằng ngoằng (với state `InVote` còn có thêm nested `if`), và nếu bản thân State cũng có local state (ví dụ khi ta update ở trạng thái `Published`, nó sẽ có timer dành riêng cho trạng thái đó, sau một khoảng thời gian Post sẽ bay vào trạng thái `Archive` một cách tự động) thì ta cần tách State ra một object riêng:
 ```typescript
 /**
  * Post structure.
@@ -195,12 +262,31 @@ const updatePost = (post: Post, action: "proceed" | "reject") => {
 };
 ```
 
+Mọi thứ gần như hoàn hảo, nhưng nếu ta muốn có local state cho các State trên thì sao? Ở trên ta chỉ có một instance duy nhất của State và đổi qua đổi lại, nếu có nhiều Post cùng sử dụng thì local state ở đây không hoạt động. Vậy ta cần một cái constructor để tạo ra State cùng local state của nó:
+```typescript
+const makePublishedState: State = () => {
+  const timer = {}; /* use a real timer here */
+
+  return {
+    proceed: (post: Post) => {
+      timer.start(() => {}); /* implement real timeout function */
+      return makeAnotherState();
+    },
+
+    reject: (post: Post) => {
+      console.warn("Go to draft again.");
+      return makeDraftState();
+    }
+  }
+}
+```
+
 Như vậy với mỗi trạng thái thì ta sẽ có một object implement `State trait` (ở đây ta hiểu là States cho Post FSM), và FSM này sẽ nhận và xử lý 2 hành động chính là `Proceed` và `Reject`. Hệ thống mỗi lần nhận 1 trong 2 hành động này sẽ delegate đến State hiện tại và State sẽ xử lý đồng thời trả lại State mới (vì vậy mới gọi là Finite). Như vậy ta không cần phải kiểm tra một loạt flags nữa, đồng thời muốn thêm một trạng thái mới cho bài viết, ví dụ Archive - trạng thái cho các bài viết đã published và quá cũ, ta chỉ cần thêm 1 object implement `State trait` và điều chỉnh action handlers cho `publishedState`, điều này giúp ta hoàn toàn không phải động vào các states còn lại, đảm bảo tính chính xác của hệ thống.
 
 Nếu muốn chuyển object Post ở trên thành dạng flatten, thích hợp cho gửi lên service, ta có thể thêm method `getStatus(): string` cho `State trait`, states sẽ trả lại status tương ứng cho post.
 
 ## Kết
-- Để implement FSM, ta có thể lựa chọn implement bằng tay như ví dụ trên hoặc sử dụng bất kì library FSM nào.
+- Để implement FSM, ta có thể lựa chọn implement bằng tay như ví dụ trên hoặc sử dụng bất kì library FSM nào, ví dụ [XState](https://xstate.js.org/), [Machina.js](http://machina-js.org/).
 - Với State, ta có thể thêm các method vào như `transition()`, `start()` hoặc `end()` để xử lý giữa việc chuyển đổi các trạng thái dễ dàng hơn.
 - FSM giúp decouple các trạng thái, giảm tối đa khả năng gặp lỗi khi thay đổi trạng thái của app.
 - Với Finite States, ta sẽ có Finite Actions. Tức là sẽ không có chuyện một action lạ hoắc lạ huơ nào nhẩy vào hệ thống của chúng ta thay đổi trạng thái lung tung.
