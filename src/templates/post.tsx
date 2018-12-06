@@ -21,6 +21,8 @@ import { colors } from '../styles/colors';
 import { inner, outer, SiteHeader, SiteMain } from '../styles/shared';
 import config from '../website-config';
 
+import {DiscussionEmbed} from 'disqus-react';
+
 const PostTemplate = css`
   .site-main {
     background #fff;
@@ -169,6 +171,9 @@ interface PageTemplateProps {
       }[];
     };
   };
+  location: {
+    href: string;
+  };
   pageContext: {
     prev: PageContext;
     next: PageContext;
@@ -206,6 +211,12 @@ export interface PageContext {
 
 const PageTemplate: React.SFC<PageTemplateProps> = props => {
   const post = props.data.markdownRemark;
+
+  const disqusConfig = {
+    url: props.location.href,
+    title: post.frontmatter.title
+  }
+
   let width = '';
   let height = '';
   if (post.frontmatter.image) {
@@ -299,6 +310,7 @@ const PageTemplate: React.SFC<PageTemplateProps> = props => {
                 <AuthorCard author={post.frontmatter.author} />
                 <PostFullFooterRight authorId={post.frontmatter.author.id} />
               </PostFullFooter>
+              <DiscussionEmbed config={disqusConfig} shortName="koodibar"/>
             </article>
           </div>
         </main>
