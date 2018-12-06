@@ -312,7 +312,7 @@ const PageTemplate: React.SFC<PageTemplateProps> = props => {
                 <AuthorCard author={post.frontmatter.author} />
                 <PostFullFooterRight authorId={post.frontmatter.author.id} />
               </PostFullFooter>
-              <DiscussionEmbed config={disqusConfig} shortname="koodibar"/>
+              <DiscussionEmbed config={disqusConfig} shortname={process.env.DISQUS_SHORTNAME}/>
             </article>
           </div>
         </main>
