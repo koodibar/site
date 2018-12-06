@@ -21,6 +21,8 @@ import { colors } from '../styles/colors';
 import { inner, outer, SiteHeader, SiteMain } from '../styles/shared';
 import config from '../website-config';
 
+import {DiscussionEmbed} from 'disqus-react';
+
 const PostTemplate = css`
   .site-main {
     background #fff;
@@ -169,9 +171,13 @@ interface PageTemplateProps {
       }[];
     };
   };
+  location: {
+    href: string;
+  };
   pageContext: {
     prev: PageContext;
     next: PageContext;
+    slug: string;
   };
 }
 
@@ -206,6 +212,14 @@ export interface PageContext {
 
 const PageTemplate: React.SFC<PageTemplateProps> = props => {
   const post = props.data.markdownRemark;
+  const {NODE_ENV, DISQUS_SHORTNAME} = process.env;
+  
+  const disqusConfig = {
+    url: NODE_ENV === 'development' ? `http://${DISQUS_SHORTNAME}${props.location.pathname}`: props.location.href,
+    title: post.frontmatter.title,
+    identifier: props.pageContext.slug
+  }
+
   let width = '';
   let height = '';
   if (post.frontmatter.image) {
@@ -299,6 +313,7 @@ const PageTemplate: React.SFC<PageTemplateProps> = props => {
                 <AuthorCard author={post.frontmatter.author} />
                 <PostFullFooterRight authorId={post.frontmatter.author.id} />
               </PostFullFooter>
+              <DiscussionEmbed config={disqusConfig} shortname={process.env.DISQUS_SHORTNAME}/>
             </article>
           </div>
         </main>
