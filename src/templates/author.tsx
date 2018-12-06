@@ -112,7 +112,10 @@ interface AuthorTemplateProps {
 
 const Author: React.SFC<AuthorTemplateProps> = props => {
   const author = props.data.authorYaml;
-  const { edges, totalCount } = props.data.allMarkdownRemark;
+  const { edges } = props.data.allMarkdownRemark;
+  const authorPostCount = props.data.allMarkdownRemark.edges.reduce((prev, cur) => {
+    return cur.node.frontmatter.author.id === author.id ? prev + 1 : prev;
+  }, 0);
 
   return (
     <IndexLayout>
@@ -161,9 +164,9 @@ const Author: React.SFC<AuthorTemplateProps> = props => {
                   </div>
                 )}
                 <div className={`${HiddenMobile}`}>
-                  {totalCount > 1 && `${totalCount} posts`}
-                  {totalCount === 1 && `1 post`}
-                  {totalCount === 0 && `No posts`} <Bull>•</Bull>
+                  {authorPostCount > 1 && `${authorPostCount} posts`}
+                  {authorPostCount === 1 && `1 post`}
+                  {authorPostCount === 0 && `No posts`} <Bull>•</Bull>
                 </div>
                 {author.website && (
                   <div>
