@@ -177,6 +177,7 @@ interface PageTemplateProps {
   pageContext: {
     prev: PageContext;
     next: PageContext;
+    slug: string;
   };
 }
 
@@ -214,7 +215,8 @@ const PageTemplate: React.SFC<PageTemplateProps> = props => {
 
   const disqusConfig = {
     url: props.location.href,
-    title: post.frontmatter.title
+    title: post.frontmatter.title,
+    identifier: props.pageContext.slug
   }
 
   let width = '';
