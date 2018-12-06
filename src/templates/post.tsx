@@ -212,9 +212,10 @@ export interface PageContext {
 
 const PageTemplate: React.SFC<PageTemplateProps> = props => {
   const post = props.data.markdownRemark;
-
+  const {NODE_ENV, DISQUS_SHORTNAME} = process.env;
+  
   const disqusConfig = {
-    url: props.location.href,
+    url: NODE_ENV === 'development' ? `http://${DISQUS_SHORTNAME}${props.location.pathname}`: props.location.href,
     title: post.frontmatter.title,
     identifier: props.pageContext.slug
   }
