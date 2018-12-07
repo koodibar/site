@@ -14,7 +14,7 @@ _(Wagner, Schmuki, Wagner & Wolstenholme, 2006)_
 > FSM được định nghĩa trong hệ thống bởi một số hữu hạn các trạng thái, trạng thái bắt đầu và điều kiện để thay đổi giữa các trạng thái.
 
 Để cho dễ hiểu thì ta có thể tham khảo đồ thị sau
-!["State Flowchart"](/img/finite-state-machine/state-flowchart.png)  
+![State Flowchart](/img/finite-state-machine/state-flowchart.png)  
 _(Nystrom, 2014)_
 
 Đồ thị trên mô tả sơ bộ về một FSM, với 4 trạng thái là `Standing`, `Ducking`, `Jumping` và `Diving`, trạng thái bắt đầu có thể hiểu là `Standing` (trong game, nhân vật lúc nào cũng đứng yên chờ người chơi ấn nút) và các điều kiện để thay đổi từ trạng thái này sang trạng thái khác (với các nút bấm).
@@ -24,7 +24,7 @@ _(Nystrom, 2014)_
 
 Ví dụ ở đồ thị ở trên, muốn nhân vật vừa ngồi vừa dash như Rockman Zero, ta chỉ cần thêm trạng thái `Low Dashing` cạnh `Ducking` và thêm cái mũi tên từ `Ducking` sang `Low Dashing` với điều kiện `Press Y`.
 
-!["State Flowchart 2"](/img/finite-state-machine/diagram2.png)  
+![State Flowchart 2](/img/finite-state-machine/diagram2.png)  
 
 Và tất nhiên, với FSM, ta không lo một thằng đang ở trạng thái `Jumping` có thể làm quả Low Dash như Zero do không có điều kiện nào giúp ta đi từ trạng thái `Jumping` sang `Low Dashing`. Điều này không những giúp code của chúng ta ngắn gọn hơn mà còn ít lỗi hơn do không lo vì kiểm tra thiếu một flag nào đó mà hệ thống đi nhầm trạng thái.
 
