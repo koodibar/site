@@ -27,6 +27,7 @@ export interface WebsiteConfig {
    */
   fontFamily: string;
   fontMonoFamily: string;
+  gaTrackingID: string;
 }
 
 const config: WebsiteConfig = {
@@ -38,10 +39,11 @@ const config: WebsiteConfig = {
   facebook: 'https://www.facebook.com/koodibar',
   twitter: 'https://twitter.com/koodibar',
   showSubscribe: true,
-  mailchimpAction: 'https://twitter.us19.list-manage.com/subscribe/post?u=a89b6987ac248c81b0b7f3a0f&amp;id=7d777b7d75',
+  mailchimpAction: '',
   mailchimpName: '',
   fontFamily: "'Noto Sans', sans-serif",
   fontMonoFamily: "'Inconsolata', monospace",
+  gaTrackingID: "UA-130643027-1"
 };
 
 export default config;
