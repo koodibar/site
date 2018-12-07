@@ -84,10 +84,6 @@ const Footer: React.SFC = () => {
             </a>
           )}
 
-          <a href="https://ghost.org" target="_blank" rel="noopener noreferrer">
-            Ghost
-          </a>
-
           <Link to="/rss.xml">RSS</Link>
         </SiteFooterNav>
       </div>

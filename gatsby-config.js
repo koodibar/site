@@ -4,7 +4,7 @@ module.exports = {
   siteMetadata: {
     title: 'Koodibar',
     description: 'Koodibar - The code bar',
-    siteUrl: 'https://koodibar.netlify.com', // full path to blog - no ending slash
+    siteUrl: 'https://koodibar.com', // full path to blog - no ending slash
   },
   mapping: {
     'MarkdownRemark.frontmatter.author': 'AuthorYaml',
@@ -46,7 +46,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-canonical-urls',
       options: {
-        siteUrl: 'https://koodibar.netlify.com',
+        siteUrl: 'https://koodibar.com',
       },
     },
     'gatsby-plugin-emotion',

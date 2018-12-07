@@ -25,7 +25,7 @@ import {DiscussionEmbed} from 'disqus-react';
 
 const PostTemplate = css`
   .site-main {
-    background #fff;
+    background: #fff;
     padding-bottom: 4vw;
   }
 `;
@@ -213,7 +213,7 @@ export interface PageContext {
 const PageTemplate: React.SFC<PageTemplateProps> = props => {
   const post = props.data.markdownRemark;
   const {NODE_ENV, DISQUS_SHORTNAME} = process.env;
-  
+
   const disqusConfig = {
     url: NODE_ENV === 'development' ? `http://${DISQUS_SHORTNAME}${props.location.pathname}`: props.location.href,
     title: post.frontmatter.title,
@@ -260,10 +260,10 @@ const PageTemplate: React.SFC<PageTemplateProps> = props => {
         <meta name="twitter:data1" content={post.frontmatter.author.id} />
         <meta name="twitter:label2" content="Filed under" />
         {post.frontmatter.tags && <meta name="twitter:data2" content={post.frontmatter.tags[0]} />}
-        <meta name="twitter:site" content={`@${config.twitter.split('https://twitter.com/')[0]}`} />
+        <meta name="twitter:site" content={`@${config.twitter.split('https://twitter.com/')[1]}`} />
         <meta
           name="twitter:creator"
-          content={`@${config.twitter.split('https://twitter.com/')[0]}`}
+          content={`@${config.twitter.split('https://twitter.com/')[1]}`}
         />
         {width && <meta property="og:image:width" content={width} />}
         {height && <meta property="og:image:height" content={height} />}
