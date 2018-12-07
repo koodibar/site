@@ -7,7 +7,7 @@ image: img/webbrowser.jpg
 date: "2018-12-05T10:00:00.000Z"
 ---
 
-!["Web Platform"](/img/webassembly/game-changer.jpg)
+![Web Platform](/img/webassembly/game-changer.jpg)
 
 # Giới thiệu WebAssembly
 
@@ -15,7 +15,7 @@ Về cơ bản, WebAssembly là một ngôn ngữ mới có thể chạy trên t
 
 WebAssembly có một ý nghĩa không nhỏ với nền tảng web nói chung, nó cho phép chương trình được viết bằng nhiều ngôn ngữ khác nhau có thể chạy trên web, mà trước đó là bất khả thi. Các modules WebAssembly không chỉ có thể được đưa vào các ứng dụng web (trên trình duyệt) mà cũng có thể được sử dụng trong các ứng dụng node.js. Cũng phải nói thêm là hiện nay, định dạng WASM đã được hỗ trợ rộng rãi trên các trình duyệt phổ biến như Chrome, Firefox, Safari và Edge.
 
-!["Browser party"](/img/webassembly/browser-party.png)
+![Browser party](/img/webassembly/browser-party.png)
 
 Ngày nay, [các ứng dụng của WebAssembly](https://webassembly.org/docs/use-cases/) đã phát triển vượt khỏi phạm vi của các trò chơi trực tuyến (online games). Cùng với trình biên dịch [EmScripten](http://kripken.github.io/emscripten-site/), ngày càng có nhiều thử nghiệm với WebAssembly được triển khai. Ví dụ như
 
@@ -34,7 +34,7 @@ Ngày nay, [các ứng dụng của WebAssembly](https://webassembly.org/docs/us
 
 # WebAssembly có vài trò như thế nào đối với web?
 
-!["WebAssembly"](/img/webassembly/webassembly-2.png)
+![WebAssembly](/img/webassembly/webassembly-2.png)
 
 Nền tảng web có thể được tách ra làm 2 phần
 - Phần máy ảo (virtual machine) để thực thi JavaScript code
