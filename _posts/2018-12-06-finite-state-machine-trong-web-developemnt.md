@@ -7,7 +7,8 @@ navigation: True
 tags: ["Theory"]
 cover: assets/posts/finite-state-machine/vintage-cash-register.jpg
 class: post-template
-date: "2018-12-06"
+date: 2018-12-06
+comments: true
 ---
 
 ## Giới thiệu Finite State Machine
