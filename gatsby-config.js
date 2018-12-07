@@ -62,5 +62,12 @@ module.exports = {
         postCssPlugins: [require('postcss-color-function'), require('cssnano')()],
       },
     },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: "UA-130643027-1",
+        head: true,
+      },
+    },
   ],
 };
