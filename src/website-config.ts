@@ -7,8 +7,8 @@ export interface WebsiteConfig {
    * blog full path, no ending slash!
    */
   siteUrl: string;
-  facebook?: string;
-  twitter?: string;
+  facebook: string;
+  twitter: string;
   /**
    * hide or show all email subscribe boxes
    */
@@ -16,11 +16,11 @@ export interface WebsiteConfig {
   /**
    * create a list on mailchimp and then create an embeddable signup form. this is the form action
    */
-  mailchimpAction?: string;
+  mailchimpAction: string;
   /**
    * this is the hidden input field name
    */
-  mailchimpName?: string;
+  mailchimpName: string;
 
   /**
    * Font setup
@@ -34,7 +34,7 @@ const config: WebsiteConfig = {
   description: 'Koodibar - The code bar',
   coverImage: 'img/blog-cover.jpg',
   logo: 'img/ghost-logo.png',
-  siteUrl: 'https://koodibar.netlify.com',
+  siteUrl: 'https://koodibar.com',
   facebook: 'https://www.facebook.com/koodibar',
   twitter: 'https://twitter.com/koodibar',
   showSubscribe: true,
