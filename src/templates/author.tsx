@@ -124,8 +124,8 @@ const Author: React.SFC<AuthorTemplateProps> = props => {
         <meta property="og:type" content="profile" />
         <meta property="og:title" content={`${author.id} - ${config.title}`} />
         <meta property="og:url" content={config.siteUrl + props.pathContext.slug} />
-        <meta property="article:publisher" content="https://www.facebook.com/koodibar" />
-        <meta property="article:author" content="https://www.facebook.com/koodibar" />
+        <meta property="article:publisher" content={`${config.facebook}`} />
+        <meta property="article:author" content={`${config.facebook}`} />
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:title" content={`${author.id} - ${config.title}`} />
         <meta name="twitter:url" content={config.siteUrl + props.pathContext.slug} />
