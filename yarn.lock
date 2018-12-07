@@ -4979,6 +4979,12 @@ gatsby-plugin-feed@^2.0.8:
     pify "^3.0.0"
     rss "^1.2.2"
 
+gatsby-plugin-google-analytics@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-google-analytics/-/gatsby-plugin-google-analytics-2.0.8.tgz#bef7913726e70f03533c4d14bfc73f8bd73550e0"
+  dependencies:
+    "@babel/runtime" "^7.0.0"
+
 gatsby-plugin-page-creator@^2.0.1:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-page-creator/-/gatsby-plugin-page-creator-2.0.5.tgz#16b268142aa3515b5856bf802d8eec5a6320dc1c"
@@ -9274,10 +9280,6 @@ react-emotion@9.2.12:
 react-error-overlay@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-3.0.0.tgz#c2bc8f4d91f1375b3dad6d75265d51cd5eeaf655"
-
-react-ga@^2.5.6:
-  version "2.5.6"
-  resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.5.6.tgz#5a2e2fa78ae298e5b0a4498210eeec631ef1b562"
 
 react-helmet@5.2.0:
   version "5.2.0"

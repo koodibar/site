@@ -6,7 +6,6 @@ import { colors } from '../styles/colors';
 import config from '../website-config';
 // tslint:disable-next-line
 import './index.css';
-import ReactGA from 'react-ga';
 
 // tslint:disable-next-line:no-unused-expression
 injectGlobal`
@@ -488,8 +487,6 @@ interface IndexProps {
 }
 
 const IndexLayout: React.SFC<IndexProps> = props => {
-  ReactGA.initialize(config.gaTrackingID);
-  ReactGA.pageview(window.location.pathname + window.location.search);
   return <div className={props.className}>{props.children}</div>;
 };
 

@@ -27,7 +27,6 @@ export interface WebsiteConfig {
    */
   fontFamily: string;
   fontMonoFamily: string;
-  gaTrackingID: string;
 }
 
 const config: WebsiteConfig = {
@@ -42,8 +41,7 @@ const config: WebsiteConfig = {
   mailchimpAction: '',
   mailchimpName: '',
   fontFamily: "'Noto Sans', sans-serif",
-  fontMonoFamily: "'Inconsolata', monospace",
-  gaTrackingID: "UA-130643027-1"
+  fontMonoFamily: "'Inconsolata', monospace"
 };
 
 export default config;
