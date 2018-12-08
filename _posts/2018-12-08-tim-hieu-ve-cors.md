@@ -2,7 +2,7 @@
 layout: post
 current: post
 title: "Tìm hiểu về CORS" 
-date: 2018-12-08 19:00
+date: 2018-12-08
 categories: [web, security]
 author: hungneox
 tags : [web, security]
