@@ -34,7 +34,7 @@ disqus_shortname: koodibar # replace with your disqus username
 google_analytics: UA-130643027-1 # replace with your GA tracking identifier
 
 # Permalinks
-permalink: /:title
+permalink: /posts/:title
 # permalink: /author/:author
 # permalink: /tag/:tag
 
