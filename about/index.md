@@ -1,17 +1,34 @@
 ---
 layout: page
 current: about
-title: About
+title: Tự giới thiệu
 navigation: true
 logo: 'assets/images/ghost.png'
 class: page-template
 subclass: 'post page'
 ---
 
-Ghost is professional publishing platform designed for modern journalism. This is a demo site of a basic Ghost install to give you a general sense of what a new Ghost site looks like when set up for the first time.
+# Koodibar là gì?
 
-> If you'd like to set up a site like this for yourself, head over to [Ghost.org](https://ghost.org/) and start a free 14 day trial to give Ghost a try!
+Koodibar (code-đi-ba or the-code-bar) là một chuyên trang về lập trình và nghề lập trình nói chung. Với mong muốn là một ghi lại và chia sẻ những bài viết về công nghệ, không hạn chế về front-end hay back-end (hơi tham vọng), nhằm mang lại một sân chơi cho những bạn đã và đang, hoặc có ý định bước chân vào con đường phát triển phần mềm. Ý tưởng thực hiện website này được truyền cảm hứng từ [grokking.org](https://grokking.org) và [ehkoo.com](https://ehkoo.com)
 
-If you're a developer: Ghost is a completely open source (MIT) Node.js application built on a JSON API with an Ember.js admin client. It works with MySQL and SQLite, and is publicly available [on Github](https://github.com/TryGhost/ghost).
+# Định hướng
 
-If you need help with using Ghost, you'll find a ton of useful articles on [our knowledgebase](https://help.ghost.org/), as well as extensive [developer documentation](https://docs.ghost.org/).
+Koodibar mong muốn mang lại những bài viết chất lượng nhất có thể và thú vị về công nghệ thông tin. Cũng như các kỹ thuật hay và xu hướng lập trình mới. Như đã nói ở trên, nội dung của website không hạn chế trong một lĩnh vực nào của software engineering. Tuy nhiên koodibar cũng cố gắng đi vào chiều sâu cũng như chú trọng chất lượng bài viết hơn là số lượng.
+
+# Những gì không tìm thấy ở đây
+- Hướng dẫn làm todo app bằng ngôn ngữ X
+- Source code website bán hàng
+- Hướng dẫn cài wordpress theme
+- Link down ebook lậu
+
+# Những thành viên ban đầu
+
+Hiện tại koodibar có 3 thành viên chính
+- Hưng [@hungneox](https://github.com/hungneox)
+- Cường [@suppayami](https://github.com/suppayami)
+- Chí [@midori0507](https://github.com/midori0507)
+
+# Bản quyền
+
+Toàn bộ bản quyền của nội dung thuộc về tác giả bài viết. Nội dung trên website nếu được chia sẻ lại học sử dụng với mục đích khác phải được sự đồng ý của tác giả đó.
