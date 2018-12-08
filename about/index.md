@@ -17,7 +17,7 @@ Koodibar (code-đi-ba or the-code-bar) là một chuyên trang về lập trình
 Koodibar mong muốn mang lại những bài viết chất lượng nhất có thể và thú vị về công nghệ thông tin. Cũng như các kỹ thuật hay và xu hướng lập trình mới. Như đã nói ở trên, nội dung của website không hạn chế trong một lĩnh vực nào của software engineering. Tuy nhiên koodibar cũng cố gắng đi vào chiều sâu cũng như chú trọng chất lượng bài viết hơn là số lượng.
 
 # Những gì không tìm thấy ở đây
-- Hướng dẫn làm todo app bằng ngôn ngữ X
+- Hướng dẫn làm ToDo app bằng ngôn ngữ X
 - Source code website bán hàng
 - Hướng dẫn cài wordpress theme
 - Link down ebook lậu
@@ -31,4 +31,6 @@ Hiện tại koodibar có 3 thành viên chính
 
 # Bản quyền
 
-Toàn bộ bản quyền của nội dung thuộc về tác giả bài viết. Nội dung trên website nếu được chia sẻ lại học sử dụng với mục đích khác phải được sự đồng ý của tác giả đó.
+- Nếu bạn đăng lại các bài viết hoặc một phần các bài viết thì xin ghi rõ nguồn (và liên kết) đến trang [Koodibar](koodibar.com)
+- Các bài đăng lại không được vì lợi nhuận. Nếu muốn đăng vì lợi nhuận thì xin hỏi tác giả trước khi tái đăng. Koodibar chỉ là nơi tập trung các bài viết.
+- Các bạn có thể sửa đổi bổ sung thêm vào các bài viết (ví dụ dùng tư liệu để viết bài khác) với điều kiện bài viết - mới của bạn cũng theo cùng ba nguyên tắc này của [Creative Commons Lisence](https://creativecommons.org/licenses/by-nc-sa/2.5/).
