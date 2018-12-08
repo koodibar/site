@@ -52,6 +52,7 @@
         "posts_per_page": 25
     },
     "scripts": {
-        "dev": "gulp"
+        "dev": "gulp",
+        "build": "gulp build"
     }
 }
