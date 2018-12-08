@@ -6,7 +6,7 @@ date: 2018-12-06 1:00
 navigation: True
 categories: [webassembly, rust]
 author: hungneox
-tags : [webassembly, rust, guid]
+tags : [webassembly]
 description: "Giới thiệu về WebAssembly"
 cover: assets/posts/webassembly/game-changer.jpg
 subclass: 'post tag-getting-started'
