@@ -3,7 +3,7 @@ layout: post
 current: post
 title: "Finite State Machine trong web development"
 author: Dr.Yami
-navigation: True
+navigation: true
 tags: ["Theory"]
 cover: assets/posts/finite-state-machine/vintage-cash-register.jpg
 class: post-template

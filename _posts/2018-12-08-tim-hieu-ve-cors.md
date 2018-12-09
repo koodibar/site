@@ -1,7 +1,8 @@
 ---
 layout: post
 current: post
-title: "Tìm hiểu về CORS" 
+title: "Tìm hiểu về CORS"
+navigation: true
 date: 2018-12-08
 categories: [web, security]
 author: hungneox

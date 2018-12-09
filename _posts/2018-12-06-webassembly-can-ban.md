@@ -3,7 +3,7 @@ layout: post
 current: post
 title: "Giới thiệu về WebAssembly" 
 date: 2018-12-06 1:00
-navigation: True
+navigation: true
 categories: [webassembly, rust]
 author: hungneox
 tags : [webassembly]
