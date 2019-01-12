@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-title: "Giới thiệu về WebAssembly" 
+title: "WebAseembly - Phần 1: Giới thiệu" 
 date: 2018-12-06 1:00
 navigation: true
 categories: [webassembly, rust]
