@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator>
+  <link href="http://localhost:4000/tag/theory/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="http://localhost:4000/" rel="alternate" type="text/html" />
+  <updated>2019-01-13T00:51:02+02:00</updated>
+  <id>http://localhost:4000/tag/theory/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Koodibar | </title>
+  
+
+  
+    <subtitle>Koodibar - the code bar</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">Finite State Machine trong web development</title>
+      <link href="http://localhost:4000/posts/finite-state-machine-trong-web-developemnt" rel="alternate" type="text/html" title="Finite State Machine trong web development" />
+      <published>2018-12-06T00:00:00+02:00</published>
+      <updated>2018-12-06T00:00:00+02:00</updated>
+      <id>http://localhost:4000/posts/finite-state-machine-trong-web-developemnt</id>
+      <content type="html" xml:base="http://localhost:4000/posts/finite-state-machine-trong-web-developemnt">&lt;h2 id=&quot;giới-thiệu-finite-state-machine&quot;&gt;Giới thiệu Finite State Machine&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Finite State Machine (FSM) đưa ra khái niệm về trạng thái (state) và lịch sử hoạt động của nó. FSM bao gồm hữu hạn các trạng thái của hệ thống, lưu trữ cách hệ thống đi đến trạng thái đó như thế nào và có các cách xử lý các dữ liệu đầu vào (input) khác nhau dựa trên trạng thái hiện tại. FSM có thể thay đổi trạng thái dựa trên input, sự thay đổi này gọi là transition.&lt;br /&gt;
+&lt;em&gt;(Wagner, Schmuki, Wagner &amp;amp; Wolstenholme, 2006)&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;FSM được định nghĩa trong hệ thống bởi một số hữu hạn các trạng thái, trạng thái bắt đầu và điều kiện để thay đổi giữa các trạng thái.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Để cho dễ hiểu thì ta có thể tham khảo đồ thị sau
+&lt;img src=&quot;/assets/posts//finite-state-machine/state-flowchart.png&quot; alt=&quot;State Flowchart&quot; /&gt;&lt;br /&gt;
+&lt;em&gt;(Nystrom, 2014)&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Đồ thị trên mô tả sơ bộ về một FSM, với 4 trạng thái là &lt;code&gt;Standing&lt;/code&gt;, &lt;code&gt;Ducking&lt;/code&gt;, &lt;code&gt;Jumping&lt;/code&gt; và &lt;code&gt;Diving&lt;/code&gt;, trạng thái bắt đầu có thể hiểu là &lt;code&gt;Standing&lt;/code&gt; (trong game, nhân vật lúc nào cũng đứng yên chờ người chơi ấn nút) và các điều kiện để thay đổi từ trạng thái này sang trạng thái khác (với các nút bấm).&lt;/p&gt;
+
+&lt;h2 id=&quot;công-dụng-của-finite-state-machine&quot;&gt;Công dụng của Finite State Machine&lt;/h2&gt;
+&lt;p&gt;Điều tuyệt vời nhất của FSM là chúng ta luôn có một đồ thị tương ứng với thiết kế, giúp chúng ta hình dung các trạng thái của hệ thống một cách dễ dàng. Chúng ta luôn biết hữu hạn các trạng thái mà hệ thống có thể đạt được dựa vào thiết kế của FSM mà không lo bỏ sót, đồng thời việc thêm hoặc bớt trạng thái rất đơn giản.&lt;/p&gt;
+
+&lt;p&gt;Ví dụ ở đồ thị ở trên, muốn nhân vật vừa ngồi vừa dash như Rockman Zero, ta chỉ cần thêm trạng thái &lt;code&gt;Low Dashing&lt;/code&gt; cạnh &lt;code&gt;Ducking&lt;/code&gt; và thêm cái mũi tên từ &lt;code&gt;Ducking&lt;/code&gt; sang &lt;code&gt;Low Dashing&lt;/code&gt; với điều kiện &lt;code&gt;Press Y&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts//finite-state-machine/diagram2.png&quot; alt=&quot;State Flowchart 2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Và tất nhiên, với FSM, ta không lo một thằng đang ở trạng thái &lt;code&gt;Jumping&lt;/code&gt; có thể làm quả Low Dash như Zero do không có điều kiện nào giúp ta đi từ trạng thái &lt;code&gt;Jumping&lt;/code&gt; sang &lt;code&gt;Low Dashing&lt;/code&gt;. Điều này không những giúp code của chúng ta ngắn gọn hơn mà còn ít lỗi hơn do không lo vì kiểm tra thiếu một flag nào đó mà hệ thống đi nhầm trạng thái.&lt;/p&gt;
+
+&lt;h2 id=&quot;áp-dụng-vào-web&quot;&gt;Áp dụng vào web&lt;/h2&gt;
+&lt;p&gt;Lý thuyết là vậy, và ví dụ thì cũng về game, vậy với web thì sao? Thực ra với dân frontend thì ngày ngày vẫn làm việc với một dạng của FSM, đó là router (ví dụ &lt;a href=&quot;https://reacttraining.com/react-router/&quot;&gt;React Router&lt;/a&gt;). Tại sao router lại là một FSM?&lt;/p&gt;
+
+&lt;p&gt;Theo như khái niệm ở trên, router bao gồm một số hữu hạn các routes và các handlers của nó, route khởi tạo (thường là root hay home) và các links hoặc actions để đi từ route này sang route khác. Như vậy với mỗi cặp route và handler, ta có thể hiệu đó là một trạng thái của hệ thống; thay mỗi cặp đó bằng state ta sẽ có router chính là FSM. Không tin bạn có thể sử dụng đúng khái niệm của FSM và tự implement một router cho mình (cho React chẳng hạn), nó hoàn toàn không khó và đáng để thử.&lt;/p&gt;
+
+&lt;p&gt;Để dễ hiểu hơn thì ta lấy một ví dụ nó thực tiễn hơn một chút. Ví dụ ta có một hệ thống bài viết, bài viết mới tạo sẽ luôn là &lt;code&gt;Draft&lt;/code&gt;, muốn được published lên trang nhất, trước tiên ta phải đi từ &lt;code&gt;Draft&lt;/code&gt; đến &lt;code&gt;In Review&lt;/code&gt;, rồi chờ các bác editors vote xem có nên đưa lên trang nhất không &lt;code&gt;In Votes&lt;/code&gt; rồi mới được lên thành &lt;code&gt;Published&lt;/code&gt;. Nếu tạch một trong 2 bước &lt;code&gt;In Review&lt;/code&gt; hoặc &lt;code&gt;In Votes&lt;/code&gt;, bài viết lại được trả về địa phương để &lt;code&gt;Draft&lt;/code&gt; tiếp. Với naive implementation, code nó sẽ là một rổ flags như sau:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;interface Post {
+  uid: number;
+  title: string;
+
+  isDraft: boolean;
+  isInReview: boolean;
+  isInVote: boolean;
+  isPublished: boolean;
+  voteCount: number;
+}
+
+enum Status { Draft, InReview, InVote, Publish }
+
+const throwUpdateError = () =&amp;gt; {};
+
+const updateStatus = (post: Post, status: Status) =&amp;gt; {
+  if (post.isDraft) {
+    if (status === Status.InReview) {
+      post.isDraft = false;
+      post.isInReview = true;
+      console.log(&quot;Wait for review&quot;);
+      return;
+    } else {
+      throwUpdateError();
+      return;
+    }
+  }
+
+  if (post.isInReview) {
+    if (status === Status.Draft) {
+      post.isDraft = true;
+      post.isInReview = false;
+      console.log(&quot;Rejected from review&quot;);
+      return;
+    }
+
+    if (status === Status.InVote) {
+      post.isInReview = false;
+      post.isInVote = true;
+      console.log(&quot;Wait for vote&quot;);
+      return;
+    }
+
+    throwUpdateError();
+  }
+  ...
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Vì cái &lt;code&gt;updateStatus&lt;/code&gt; nó quá dài và phức tạp trong trường hợp này nên bài viết chỉ viết đến trường hợp bài viết đang chờ được review &lt;code&gt;In Review&lt;/code&gt;. Vấn đề của cục code ở trên là nó quá dài, quá nhiều flags và khó để thêm bớt trạng thái, chưa kể nếu thêm vài cái flags vào nữa thì việc sót trường hợp là điều thường gặp, dẫn đến logic đi sai hướng (ví dụ tự nhiên từ Draft nhảy lên Published luôn thì rõ là tai hại).&lt;/p&gt;
+
+&lt;p&gt;Để mọi thứ đơn giản hơn, ta có thể thay đống flags loằng ngoằng trên bằng một field duy nhất là &lt;code&gt;state&lt;/code&gt; với type là &lt;code&gt;enum State&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;enum State {
+  Draft,
+  InReview,
+  InVote,
+  Published
+}
+
+/**
+ * Post structure.
+ */
+interface Post {
+  uid: number;
+  title: string;
+
+  voteCount: number;
+  state: State;
+}
+
+/**
+ * Proceed action in FSM
+ */
+const proceedPost = (post: Post) =&amp;gt; {
+  if (post.state === State.Draft) {
+    post.state = State.InReview;
+    return
+  }
+
+  if (post.state === State.InReview) {
+    post.state = State.InVote;
+    return
+  }
+
+  if (post.state === State.InVote) {
+    if (post.voteCount &amp;lt; 5) {
+      console.warn('Not enough vote to proceed')
+      return
+    }
+    post.state = State.Published;
+    return
+  }
+
+  console.warn('Cannot proceed more.')
+};
+
+/**
+ * Reject action in FSM
+ */
+const rejectPost = (post: Post) =&amp;gt; {
+  /* same as above */
+};
+
+/**
+ * Delegate action for FSM
+ */
+const updatePost = (post: Post, action: &quot;proceed&quot; | &quot;reject&quot;) =&amp;gt; {
+  if (action === &quot;proceed&quot;) {
+    proceedPost(post);
+  }
+
+  if (action === &quot;reject&quot;) {
+    rejectPost(post);
+  }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Nhìn mọi thứ đã rõ ràng và ngắn gọn hơn nhiều, tuy nhiên với một đống &lt;code&gt;if - else&lt;/code&gt;, mọi thứ vẫn còn khá loằng ngoằng (với state &lt;code&gt;InVote&lt;/code&gt; còn có thêm nested &lt;code&gt;if&lt;/code&gt;), và nếu bản thân State cũng có local state (ví dụ khi ta update ở trạng thái &lt;code&gt;Published&lt;/code&gt;, nó sẽ có timer dành riêng cho trạng thái đó, sau một khoảng thời gian Post sẽ bay vào trạng thái &lt;code&gt;Archive&lt;/code&gt; một cách tự động) thì ta cần tách State ra một object riêng:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;/**
+ * Post structure.
+ */
+interface Post {
+  uid: number;
+  title: string;
+
+  voteCount: number;
+  state: State;
+}
+
+/**
+ * Trait of a state
+ */
+interface State {
+  proceed(post: Post): State;
+  reject(post: Post): State;
+}
+
+/**
+ * Draft State in Post FSM
+ */
+const draftState: State = {
+  proceed: (post: Post) =&amp;gt; {
+    return inReviewState;
+  },
+
+  reject: (post: Post) =&amp;gt; {
+    console.warn(&quot;Draft cannot be rejected&quot;);
+    return draftState;
+  }
+};
+
+/**
+ * In Review State in Post FSM
+ */
+const inReviewState: State = {
+  proceed: (post: Post) =&amp;gt; {
+    return inVoteState;
+  },
+
+  reject: (post: Post) =&amp;gt; {
+    return draftState;
+  }
+};
+
+/**
+ * In Vote State in Post FSM
+ */
+const inVoteState: State = {
+  proceed: (post: Post) =&amp;gt; {
+    if (post.voteCount &amp;lt; 5) {
+      console.warn(&quot;Vote count must be &amp;gt;= 5 to be publised&quot;);
+      return inVoteState;
+    }
+    return publishedState;
+  },
+
+  reject: (post: Post) =&amp;gt; {
+    return draftState;
+  }
+};
+
+/**
+ * Published State in Post FSM
+ */
+const publishedState: State = {
+  proceed: (post: Post) =&amp;gt; {
+    console.warn(&quot;Published cannot be processed anymore&quot;);
+    return publishedState;
+  },
+
+  reject: (post: Post) =&amp;gt; {
+    console.warn(&quot;Go to draft again.&quot;);
+    return draftState;
+  }
+};
+
+/**
+ * Proceed action in FSM
+ */
+const proceedPost = (post: Post) =&amp;gt; {
+  post.state = post.state.proceed(post);
+};
+
+/**
+ * Reject action in FSM
+ */
+const rejectPost = (post: Post) =&amp;gt; {
+  post.state = post.state.reject(post);
+};
+
+/**
+ * Delegate action for FSM
+ */
+const updatePost = (post: Post, action: &quot;proceed&quot; | &quot;reject&quot;) =&amp;gt; {
+  if (action === &quot;proceed&quot;) {
+    proceedPost(post);
+  }
+
+  if (action === &quot;reject&quot;) {
+    rejectPost(post);
+  }
+};
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Mọi thứ gần như hoàn hảo, nhưng nếu ta muốn có local state cho các State trên thì sao? Ở trên ta chỉ có một instance duy nhất của State và đổi qua đổi lại, nếu có nhiều Post cùng sử dụng thì local state ở đây không hoạt động. Vậy ta cần một cái constructor để tạo ra State cùng local state của nó:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-typescript&quot;&gt;const makePublishedState: State = () =&amp;gt; {
+  const timer = {}; /* use a real timer here */
+
+  return {
+    proceed: (post: Post) =&amp;gt; {
+      timer.start(() =&amp;gt; {}); /* implement real timeout function */
+      return makeAnotherState();
+    },
+
+    reject: (post: Post) =&amp;gt; {
+      console.warn(&quot;Go to draft again.&quot;);
+      return makeDraftState();
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Như vậy với mỗi trạng thái thì ta sẽ có một object implement &lt;code&gt;State trait&lt;/code&gt; (ở đây ta hiểu là States cho Post FSM), và FSM này sẽ nhận và xử lý 2 hành động chính là &lt;code&gt;Proceed&lt;/code&gt; và &lt;code&gt;Reject&lt;/code&gt;. Hệ thống mỗi lần nhận 1 trong 2 hành động này sẽ delegate đến State hiện tại để xử lý đồng thời trả lại State mới. Như vậy ta không cần phải kiểm tra một loạt flags nữa, đồng thời muốn thêm một trạng thái mới cho bài viết, ví dụ Archive - trạng thái cho các bài viết đã published và quá cũ, ta chỉ cần thêm 1 object implement &lt;code&gt;State trait&lt;/code&gt; và điều chỉnh action handlers cho &lt;code&gt;publishedState&lt;/code&gt;, điều này giúp ta hoàn toàn không phải động vào các states còn lại, đảm bảo tính chính xác của hệ thống.&lt;/p&gt;
+
+&lt;p&gt;Nếu muốn chuyển object Post ở trên thành dạng flatten, thích hợp cho gửi lên service, ta có thể thêm method &lt;code&gt;getStatus(): string&lt;/code&gt; cho &lt;code&gt;State trait&lt;/code&gt;, states sẽ trả lại status tương ứng cho post.&lt;/p&gt;
+
+&lt;h2 id=&quot;kết&quot;&gt;Kết&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Để implement FSM, ta có thể lựa chọn implement bằng tay như ví dụ trên hoặc sử dụng bất kì library FSM nào, ví dụ &lt;a href=&quot;https://xstate.js.org/&quot;&gt;XState&lt;/a&gt;, &lt;a href=&quot;http://machina-js.org/&quot;&gt;Machina.js&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;Với State, ta có thể thêm các method vào như &lt;code&gt;transition()&lt;/code&gt;, &lt;code&gt;start()&lt;/code&gt; hoặc &lt;code&gt;end()&lt;/code&gt; để xử lý giữa việc chuyển đổi các trạng thái dễ dàng hơn.&lt;/li&gt;
+  &lt;li&gt;FSM giúp decouple các trạng thái, giảm tối đa khả năng gặp lỗi khi thay đổi trạng thái của app.&lt;/li&gt;
+  &lt;li&gt;Với Finite States, ta sẽ có Finite Actions. Tức là sẽ không có chuyện một action lạ hoắc lạ huơ nào nhẩy vào hệ thống của chúng ta thay đổi trạng thái lung tung.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tham-khảo&quot;&gt;Tham khảo&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Modeling-Software-Finite-State-Machines/dp/0849380863&quot;&gt;Wagner, F., Schmuki, R., Wagner, T., &amp;amp; Wolstenholme, P. (2006). Modeling software with finite state machines. Estados Unidos: Auerbach Publications&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://gameprogrammingpatterns.com/&quot;&gt;Nystrom, R. (2014). Game programming patterns. Lexington, KY.: Genever Benning&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Finite-state_machine&quot;&gt;Wikipedia - Finite State Machine&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;other-notes&quot;&gt;Other notes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ý tưởng của hệ thống bài viết trong mục áp dụng học hỏi từ bài viết &lt;a href=&quot;https://kipalog.com/posts/Finite-state-machine-trong-lap-trinh---Elixir&quot;&gt;FSM của Dung Nguyen&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Dr.Yami</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="Theory" />
+      
+
+      
+        <summary type="html">Giới thiệu Finite State Machine Finite State Machine (FSM) đưa ra khái niệm về trạng thái (state) và lịch sử hoạt động của nó. FSM bao gồm hữu hạn các trạng thái của hệ thống, lưu trữ cách hệ thống đi đến trạng thái đó như thế nào và có các cách xử lý các dữ liệu đầu vào (input) khác nhau dựa trên trạng thái hiện tại. FSM có thể thay đổi trạng thái dựa trên input, sự thay đổi này gọi là transition. (Wagner, Schmuki, Wagner &amp;amp; Wolstenholme, 2006)</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

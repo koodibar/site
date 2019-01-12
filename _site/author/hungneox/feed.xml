@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator>
+  <link href="http://localhost:4000/author/hungneox/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="http://localhost:4000/" rel="alternate" type="text/html" />
+  <updated>2019-01-13T00:51:02+02:00</updated>
+  <id>http://localhost:4000/author/hungneox/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Koodibar | </title>
+  
+
+  
+    <subtitle>Koodibar - the code bar</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">WebAseembly - Phần 2: LLVM</title>
+      <link href="http://localhost:4000/posts/webassembly-p2-llvm" rel="alternate" type="text/html" title="WebAseembly - Phần 2: LLVM" />
+      <published>2019-01-12T23:00:00+02:00</published>
+      <updated>2019-01-12T23:00:00+02:00</updated>
+      <id>http://localhost:4000/posts/webassembly-p2-llvm</id>
+      <content type="html" xml:base="http://localhost:4000/posts/webassembly-p2-llvm">&lt;h1 id=&quot;giới-thiệu-sơ-lược&quot;&gt;Giới thiệu sơ lược&lt;/h1&gt;
+
+&lt;p&gt;Tiếp theo phần trước &lt;a href=&quot;/posts/webassembly-p1-gioi-thieu&quot;&gt;WebAssembly&lt;/a&gt;, bài viết này sẽ giới thiệu về mối quan hệ giữa LLVM và WebAssembly, cũng như làm một số thử nghiệm để dịch &lt;a href=&quot;https://blog.rust-lang.org/2016/12/22/Rust-1.14.html&quot;&gt;Rust&lt;/a&gt; và C sang WebAssembly sử dụng Empscripten.&lt;/p&gt;
+
+&lt;h1 id=&quot;webassembly---llvm---emscripten&quot;&gt;WebAssembly - LLVM - Emscripten&lt;/h1&gt;
+
+&lt;h2 id=&quot;llvm&quot;&gt;LLVM&lt;/h2&gt;
+
+&lt;p&gt;LLVM là một &lt;code&gt;compiler framework&lt;/code&gt;, nói ngắn gọn là một framework để xây dựng nên trình biên dịch của một ngôn ngữ lập trình. Nó cung cấp những công cụ mạnh mẽ để xây dựng phần front-end (parser, lexer) cũng như phần backend (phần chuyển phần code trung gian LLVM sang mã máy), cho các ngôn ngữ lập trình mới.&lt;/p&gt;
+
+&lt;p&gt;Khá nhiều ngôn ngữ lập trình phổ biến được xây dựng dựa trên nền tảng của LLVM. Nó là &lt;code&gt;engine&lt;/code&gt; đằng sau của &lt;a href=&quot;https://clang.llvm.org/get_started.html&quot;&gt;Clang compiler&lt;/a&gt; (trình biên dịch C/C++/Objective-C của Apple), cũng như các trình biên dịch cho các ngôn ngữ mới ra đời gần đây như Rust và Switf. Có thể nói có một danh sách các ngôn ngữ từ A-&amp;gt;X được build dựa trên LLVM, chỉ có một trường hợp biệt lệ là Go không dùng LLVM, tuy nhiên Google cũng đang làm việc để tạo ra một phiên bản LLVM-based Go compiler.&lt;/p&gt;
+
+&lt;p&gt;Trên trang chủ của LLVM cũng cung cấp một tutorial để tạo ra một ngôn ngữ lập trình mới có tên là &lt;a href=&quot;https://llvm.org/docs/tutorial/index.html&quot;&gt;Kaleidoscope&lt;/a&gt; (Kính vạn hoa). Hoặc nếu thích bạn có thể tham khảo thêm bài viết này: &lt;a href=&quot;https://gnuu.org/2009/09/18/writing-your-own-toy-compiler/&quot;&gt;Writing Your Own Toy Compiler Using Flex, Bison and LLVM&lt;/a&gt;. Biết đâu được sau này chúng ta ngoài Go lang ra còn có một ngôn ngữ “made in Vietnam” như &lt;code&gt;Khoai lang&lt;/code&gt; hay &lt;code&gt;Rau lang&lt;/code&gt; :))).&lt;/p&gt;
+
+&lt;h2 id=&quot;llvm-webassembly-và-emscripten&quot;&gt;LLVM, WebAssembly và Emscripten&lt;/h2&gt;
+
+&lt;p&gt;Cho đến đây thì chúng ta vẫn chưa thấy rõ mối liên hệ giữa LLVM và WebAssembly, chúng ta vẫn chưa hai thằng này ăn nhậu với nhau thế nào. Để làm rõ mối liên kết này chúng ta cần phải nói lại về compiler front-end và back-end đã đề cập ở trên.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Phần front-end làm chủ yếu 3 khâu: lexical analysis, syntax analysis, semantic analysis. Nói nôm na là &lt;code&gt;lexer&lt;/code&gt; sẽ đọc từng ký tự thành các token, sau đó &lt;code&gt;parser&lt;/code&gt; sẽ chuyển chúng thành AST (abstract syntas tree), cuối cùng ở phần &lt;code&gt;semantic analysis&lt;/code&gt; thì các thông tin khác sẽ được kiểm tra ví dụ như type checking.&lt;/li&gt;
+  &lt;li&gt;Phần backend-end: sẽ chịu trách nhiệm tạo ra mã máy cho từng kiến trúc CPU cụ thể.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/webassembly/compiler-structure.png&quot; alt=&quot;&amp;quot;Compiler structure&amp;quot;&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ví dụ chúng ta muốn biên dịch C sang WebAssembly. Chúng ta có thể dùng CLang front-end để chuyển phần mã nguồn C sang LLVM IR (intermediate representation). Một khi phần code đó đã được chuyển thành LLVM IR, LLVM sẽ tiến hành một số bước để tối ưu nó. Tiếp theo để chuyển phần LLVM IR này thành WebAssembly (dạng .wasm), chúng ta cần một back-end. Hiện tại thì chưa có chính thức back-end cho WebAssembly, hiện tại nó đang là một project đang trong quá trình hoàn thành của LLVM.&lt;/p&gt;
+
+&lt;p&gt;Tạm gọi cái official backend chưa dùng được, cho nên hiện tại thì có một số tool dùng được như là &lt;strong&gt;Emscripten&lt;/strong&gt; hay &lt;a href=&quot;http://gonacl.com/&quot;&gt;&lt;strong&gt;PNaCL&lt;/strong&gt;&lt;/a&gt;, nhưng khuôn khổ bài này chỉ nói về Emscripten (nói chung thì bất kể tool nào được dùng thì nó cũng sẽ dịch ra file &lt;code&gt;.wasm&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;Nói một cách đơn giản hoá, Empscripten là một trình biên dịch LLVM-to-JavaScript, tuy nhiên nó phải dịch JavaScript sang một định dạng trung gian cho &lt;a href=&quot;https://www.wikiwand.com/en/Asm.js&quot;&gt;asm.js&lt;/a&gt; (một subset của JavaScript) rồi mới convert nó sang WebAssembly.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/webassembly/llvm-ir-wasm.png&quot; alt=&quot;&amp;quot;Compiler structure&amp;quot;&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;dịch-rust-sang-wasm&quot;&gt;Dịch Rust sang WASM&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Đầu tiên là cài Rust&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Cách tốt nhất để cài Rust là thông qua &lt;a href=&quot;https://rustup.rs/&quot;&gt;rustup&lt;/a&gt;. Nó là một cái project chính thức của Rust luôn.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl https://sh.rustup.rs -sSf | sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Sau khi đã cài &lt;em&gt;rustup&lt;/em&gt; thì ta cài tiếp phiên bản stable của rust, cũng như &lt;em&gt;wasm32-unknown-emscripten&lt;/em&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rustup install stable
+rustup default stable
+rustup target add wasm32-unknown-emscripten
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Tiếp theo là cài phiên bản portable của Emscripten SDK&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Check out &lt;a href=&quot;https://github.com/juj/emsdk&quot;&gt;emscripten-sdk&lt;/a&gt; về. Sau đó chạy lệnh sau để cài đặt và thiết lập biến môi trường. (Xem thêm hướng dẫn cài đặt &lt;a href=&quot;(http://kripken.github.io/emscripten-site/docs/getting_started/downloads.html#download-and-install)&quot;&gt;ở đây&lt;/a&gt;)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Download and install the latest SDK tools.
+./emsdk install latest
+
+# Make the &quot;latest&quot; SDK &quot;active&quot; for the current user. (writes ~/.emscripten file)
+./emsdk activate latest
+
+source ./emsdk_env.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Sau đó kiểm tra phiên bản của &lt;code&gt;emcc&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emcc -v
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ví dụ ta biên dịch một file Rust đơn giản như sau:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;fn main() {
+    println!(&amp;quot;Hello World!&amp;quot;);
+}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Sau đó ta chạy lệnh rustc để dịch &lt;code&gt;hello.rs&lt;/code&gt; sang một bundle bao gồm 3 file: .wasm, .js để load .wasm và file html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;rustc --target=wasm32-unknown-emscripten hello.rs -o hello.html
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Để chạy hello.html ta cần một http server đơn giản, chúng ta có thể dùng &lt;code&gt;SimpleHTTPServer&lt;/code&gt; của python.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;python -m SimpleHTTPServer
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Truy cập vào địa chỉ &lt;a href=&quot;http://localhost:8000/hello.html&quot;&gt;http://localhost:8000/hello.html&lt;/a&gt; ta thấy một giao diện siêu chuối &lt;code&gt;power by empscripten&lt;/code&gt; như sau:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/webassembly/helloworld.jpg&quot; alt=&quot;&amp;quot;Hello World&amp;quot;&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Để tìm hiểu cách sử dụng lại các hàm được export ra &lt;code&gt;.wasm&lt;/code&gt; như thế nào, chúng ta có thể tìm hiểu ở ví dụ tiếp theo.&lt;/p&gt;
+
+&lt;h1 id=&quot;dịch-c-sang-wasm&quot;&gt;Dịch C sang WASM&lt;/h1&gt;
+
+&lt;p&gt;Giả sử ta có file &lt;code&gt;add.c&lt;/code&gt; như sau&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;int add(int a, int b) {
+  return a + b;
+}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Chạy lệnh sau để biên dịch C thành wasm&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;emcc -s &quot;EXTRA_EXPORTED_RUNTIME_METHODS=['cwrap']&quot; -s EXPORTED_FUNCTIONS=&quot;['_add']&quot; -s WASM=1 -o add.js  add.c
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Nhìn vào tham số của dòng lệnh trên ta cũng thấy ẩn chứa đằng sau đó là một số “tà thuật”, không có hai cái tham số &lt;code&gt;EXTRA_EXPORTED_RUNTIME_METHODS&lt;/code&gt;, &lt;code&gt;EXPORTED_FUNCTIONS&lt;/code&gt; thì cũng không dùng lại được hàm &lt;code&gt;add&lt;/code&gt;, chưa kể emscripten còn tự thêm underscore phía trước.&lt;/p&gt;
+
+&lt;p&gt;Sau đó ta có thể dùng lại hàm add trong javascript như sau&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+  &amp;lt;script src=&amp;quot;add.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;script&amp;gt;
+      Module.onRuntimeInitialized = _ =&amp;gt; {
+        const add = Module.cwrap(&amp;#39;add&amp;#39;, &amp;#39;number&amp;#39;, &amp;#39;number&amp;#39;);
+        console.log(add(89, 29))
+      }
+  &amp;lt;/script&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Vậy là với &lt;code&gt;Module.cwrap&lt;/code&gt;, chúng ta có thể lấy được hàm cộng hai số mà chúng ta đã viết ở trong &lt;code&gt;add.c&lt;/code&gt;. Tuy nó chẳng có gì ấn tượng cả nhưng nó mang lại nhiều khả năng để chúng ta có thể chuyển code được viết bằng các ngôn ngữ khác để dùng lại trong JavaScript.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Còn tiếp -&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;tham-khảo&quot;&gt;Tham khảo&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://blog.rust-lang.org/2016/12/22/Rust-1.14.html&quot;&gt;Announcing Rust 1.14&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/WebAssembly/Concepts&quot;&gt;WebAssembly Concepts&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://hacks.mozilla.org/2017/02/creating-and-working-with-webassembly-modules/&quot;&gt;Creating and working with WebAssembly modules&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Hung Neox</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="webassembly" />
+      
+
+      
+        <summary type="html">Giới thiệu sơ lược</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Tìm hiểu về CORS</title>
+      <link href="http://localhost:4000/posts/tim-hieu-ve-cors" rel="alternate" type="text/html" title="Tìm hiểu về CORS" />
+      <published>2018-12-08T00:00:00+02:00</published>
+      <updated>2018-12-08T00:00:00+02:00</updated>
+      <id>http://localhost:4000/posts/tim-hieu-ve-cors</id>
+      <content type="html" xml:base="http://localhost:4000/posts/tim-hieu-ve-cors">&lt;p&gt;&lt;img src=&quot;https://mdn.mozillademos.org/files/14295/CORS_principle.png&quot; alt=&quot;&amp;quot;CORS principle&amp;quot;&quot; title=&quot;CORS princile&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;cross-origin-resource-sharing-cors&quot;&gt;Cross-Origin Resource Sharing (CORS)&lt;/h1&gt;
+
+&lt;p&gt;Trước khi có tiêu chuẩn về &lt;code&gt;CORS&lt;/code&gt;, thì không có cách nào để một trang web gửi request thông qua trình duyệt đến một domain khác. Đó là một cơ chế trong trình duyệt có từ Netscape Navigator 2 (1995) gọi là &lt;strong&gt;Same Origin Policy&lt;/strong&gt;, để hạn chế một &lt;code&gt;document&lt;/code&gt; hay một &lt;code&gt;script&lt;/code&gt; tương tác với tài nguyên không cùng một gốc hay &lt;code&gt;origin&lt;/code&gt;. Hai trang web có cùng một &lt;code&gt;origin&lt;/code&gt; là khi nó có chung &lt;code&gt;protocol&lt;/code&gt;, &lt;code&gt;port&lt;/code&gt; và &lt;code&gt;host&lt;/code&gt;. Khác subdirectory cũng coi là khác &lt;code&gt;origin&lt;/code&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;URL&lt;/th&gt;
+      &lt;th&gt;Outcome&lt;/th&gt;
+      &lt;th&gt;Reason&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://store.company.com/dir2/other.html&lt;/td&gt;
+      &lt;td&gt;Success&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://store.company.com/dir/inner/another.html&lt;/td&gt;
+      &lt;td&gt;Success&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;https://store.company.com/secure.html&lt;/td&gt;
+      &lt;td&gt;Failure&lt;/td&gt;
+      &lt;td&gt;Different protocol&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://store.company.com:81/dir/etc.html&lt;/td&gt;
+      &lt;td&gt;Faillure&lt;/td&gt;
+      &lt;td&gt;Different port&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://news.company.com/dir/other.html&lt;/td&gt;
+      &lt;td&gt;Failture&lt;/td&gt;
+      &lt;td&gt;Different host&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Cơ chế này nhằm hạn chế các cuộc tấn công Cross-site scripting (XSS), khi attacker nhúng cấy một đoạn mã vào các websites để gửi các thông tin đánh cắp được về máy chủ khác hoặc, thực hiện giao dịch bằng thông tin vừa ăn cắp được (từ cookies của trình duyệt etc).&lt;/p&gt;
+
+&lt;p&gt;Và một trong những lợi ích to lớn khác là nó cung cấp một cơ chế (yếu) để ngăn các website khác ăn cắp traffic của bạn một cách quá dễ dàng :-)&lt;/p&gt;
+
+&lt;h1 id=&quot;cors-http-headers&quot;&gt;CORS HTTP headers&lt;/h1&gt;
+&lt;p&gt;CORS sử dụng một số HTTP headers trong cả request và response để cho phép việc truy xuất tài nguyên không cùng một &lt;code&gt;origin&lt;/code&gt; có thể xảy ra, mà vẫn đảm bảo độ bảo mật.&lt;/p&gt;
+
+&lt;p&gt;Về cơ bản thì từ phía server sẽ thông báo cho trình duyệt biết là server chỉ chấp nhận resquest từ &lt;code&gt;origin&lt;/code&gt; nào và những phương thức HTTP nào.&lt;/p&gt;
+
+&lt;h2 id=&quot;access-control-allow-origin&quot;&gt;Access-Control-Allow-Origin&lt;/h2&gt;
+
+&lt;p&gt;Đây là header được trả về từ phía server, để thông báo cho browser biết domain nào được truy xuất tài nguyên từ server đó. Header này có thể được thiết lập giá trị:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;*&lt;/code&gt; chấp nhận request từ tất tần tật các domain&lt;/li&gt;
+  &lt;li&gt;hoặc một domain đầy đủ (https://example.com)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;access-control-allow-headers&quot;&gt;Access-Control-Allow-Headers&lt;/h2&gt;
+&lt;p&gt;Bằng header này Server sẽ thông báo cho trình duyệt biết những request header nào được phía server hỗ trợ. Ví dụ như (&lt;code&gt;x-authentication-token&lt;/code&gt;, &lt;code&gt;Authorization&lt;/code&gt; v.v). Nếu client gửi những header khác không nằm trong danh sách này sẽ bị server bỏ qua.&lt;/p&gt;
+
+&lt;h2 id=&quot;access-control-allow-methods&quot;&gt;Access-Control-Allow-Methods&lt;/h2&gt;
+
+&lt;p&gt;Đây là một danh sách chứa các phương thức HTTP mà server cho phép client sử dụng (vd: &lt;code&gt;GET&lt;/code&gt;, &lt;code&gt;POST&lt;/code&gt;, &lt;code&gt;DELETE&lt;/code&gt;), và sách này phân cách bằng dấu phẩy. Ví dụ có những trường hợp server chỉ cho phép truy xuất, nhưng không cho phép cập nhật hoặc xoá tài nguyên chẳng hạn.&lt;/p&gt;
+
+&lt;h2 id=&quot;origin&quot;&gt;Origin&lt;/h2&gt;
+
+&lt;p&gt;Header này được đính kèm theo mỗi request đến server, nó được sinh ra từ server mà nơi tài liệu được trả về. Và vì lý do bảo mật, trình duyệt không cho phép ghi đè, thay đổi gía trị của header này.&lt;/p&gt;
+
+&lt;h2 id=&quot;preflight-request&quot;&gt;Preflight request&lt;/h2&gt;
+
+&lt;p&gt;Một cái preflight request là một request được gửi từ phía trình duyệt để thăm dò xem server có hiểu/ hỗ trợ giao thức CORS hay không. Nó được tự động gởi bởi trình duyệt. Việc của phía server là trả về những headers cần thiết cho phía client.&lt;/p&gt;
+
+&lt;p&gt;Ví dụ, phía client có thể gửi một OPTIONS request để xem server có cho phép &lt;code&gt;DELETE&lt;/code&gt; tài nguyên trên server hay không.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;OPTIONS /resource/foo 
+Access-Control-Request-Method: DELETE 
+Access-Control-Request-Headers: origin, x-requested-with
+Origin: https://foo.bar.org
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Server sẽ phản hồi cho phía client những thông tin cần thiết ví dụ như header &lt;code&gt;Access-Control-Allow-Methods&lt;/code&gt; chứa những phương thức HTTP mà client được phép thực hiện.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;HTTP/1.1 200 OK
+Content-Length: 0
+Connection: keep-alive
+Access-Control-Allow-Origin: https://foo.bar.org
+Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE
+Access-Control-Max-Age: 86400
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;làm-thế-nào-để-sửa-lỗi-cors&quot;&gt;Làm thế nào để sửa lỗi “CORS”&lt;/h1&gt;
+
+&lt;p&gt;Như đã nói ở trên, đây không thực sự là một lỗi kỹ thuật. Nó là cơ chế của thế giới web để đảm bảo vệ người dùng. Có một số cách để giải quyết vấn đề này:&lt;/p&gt;
+
+&lt;h2 id=&quot;a-cách-tiêu-chuẩn&quot;&gt;a) Cách tiêu chuẩn&lt;/h2&gt;
+&lt;p&gt;Để “fix lỗi” này là thêm domain của bạn vào &lt;code&gt;Access-Control-Allow-Origin&lt;/code&gt; header của server. Khi lập trình front-end, bạn nên sử dụng một domain để code, ví dụ &lt;code&gt;myawesomeapp.test&lt;/code&gt; thay vì dùng &lt;code&gt;localhost:3000&lt;/code&gt;. (Hoặc đơn giản hơn là cấu hình để server trả về &lt;code&gt;Access-Control-Allow-Origin: *&lt;/code&gt;. Nhưng cách này không được khuyến khích.)&lt;/p&gt;
+
+&lt;h2 id=&quot;b-cách-thứ-hai&quot;&gt;b) Cách thứ hai&lt;/h2&gt;
+&lt;p&gt;Hoặc nếu như bạn hoàn toàn không thể kiểm soát được backend (không có contact của backend dev) và cần một giải pháp tạm thời, thì bạn có thể tắt chức năng bảo mật của trình duyệt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chrome --disable-web-security --user-data-dir
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Lưu ý&lt;/strong&gt; rằng nó áp dụng cho tất cả các trang web, nên nếu bạn quên mở nó lại thì bạn có thể bị dính chưởng XSS.&lt;/p&gt;
+
+&lt;h2 id=&quot;c-cách-thứ-ba&quot;&gt;c) Cách thứ ba&lt;/h2&gt;
+&lt;p&gt;Là nếu như bạn hoàn toàn không thể làm gì được thì có thể viết một proxy đứng ở giữa front-end và server bạn cần truy xuất tài nguyên. Nói chung thì chỉ có browser cản bạn gởi request thôi, chứ dùng &lt;code&gt;curl&lt;/code&gt; hay truy xuất thẳng trên browser thì vẫn bình thường. Cho nên bạn hoàn toàn có thể dựng một server để trung chuyển request và response mà không gặp vấn để gì. Thật ra mấu chốt là nếu client không gửi &lt;code&gt;Orign&lt;/code&gt; header đến server thì server không check nó có phải là request CORS không.&lt;/p&gt;
+
+&lt;p&gt;Ví dụ đây là một hàm từ package &lt;a href=&quot;https://github.com/digiaonline/lumen-cors&quot;&gt;lumen-cors&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;/**
+* @inheritdoc
+*/
+public function isCorsRequest(Request $request)
+{
+    return $request-&amp;gt;headers-&amp;gt;has('Origin');
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@baphemot/understanding-cors-18ad6b478e2b&quot;&gt;Bartosz Szczeciński, Understanding CORS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy&quot;&gt;Mozilla, Same-origin policy&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS&quot;&gt;Mozilla, Cross-Origin Resource Sharing (CORS)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request&quot;&gt;Mozilla, Preflight request&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Hung Neox</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="web" />
+      
+        <category term="security" />
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">Giới thiệu về WebAssembly</title>
+      <link href="http://localhost:4000/posts/webassembly-can-ban" rel="alternate" type="text/html" title="Giới thiệu về WebAssembly" />
+      <published>2018-12-06T01:00:00+02:00</published>
+      <updated>2018-12-06T01:00:00+02:00</updated>
+      <id>http://localhost:4000/posts/webassembly-can-ban</id>
+      <content type="html" xml:base="http://localhost:4000/posts/webassembly-can-ban">&lt;h1 id=&quot;giới-thiệu-webassembly&quot;&gt;Giới thiệu WebAssembly&lt;/h1&gt;
+
+&lt;p&gt;Về cơ bản, WebAssembly là một ngôn ngữ mới có thể chạy trên trình duyệt (dĩ nhiên là ngoài JavaScript ra). Nó được thiết kế để dịch ra từ ngôn ngữ low-level khác như C/C++ và Rust, nhưng không nhằm để thay thế JavaScript. Tuy bản thân JavaScript đủ mạnh để giải quyết đa số các vấn đề trên web. Nhưng hiện nay chúng ta cũng gặp phải một số vấn đề về hiệu năng (performance) của JavaScript, trong các ứng dụng cần xử lý nhiều như các ứng dụng trò-chơi lập-thể (3D games), &lt;a href=&quot;https://www.wikiwand.com/en/Virtual_reality&quot;&gt;thực-tế ảo (virtual reality)&lt;/a&gt; và &lt;a href=&quot;https://www.wikiwand.com/en/Augmented_reality&quot;&gt;thực-tế tăng-cường (augmented reality)&lt;/a&gt;, thị giác máy tính (computer vision), chỉnh sửa hình ảnh và phim v.v&lt;/p&gt;
+
+&lt;p&gt;WebAssembly có một ý nghĩa không nhỏ với nền tảng web nói chung, nó cho phép chương trình được viết bằng nhiều ngôn ngữ khác nhau có thể chạy trên web, mà trước đó là bất khả thi. Các modules WebAssembly không chỉ có thể được đưa vào các ứng dụng web (trên trình duyệt) mà cũng có thể được sử dụng trong các ứng dụng node.js. Cũng phải nói thêm là hiện nay, định dạng WASM đã được hỗ trợ rộng rãi trên các trình duyệt phổ biến như Chrome, Firefox, Safari và Edge.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/webassembly/browser-party.png&quot; alt=&quot;&amp;quot;Browser party&amp;quot;&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ngày nay, &lt;a href=&quot;https://webassembly.org/docs/use-cases/&quot;&gt;các ứng dụng của WebAssembly&lt;/a&gt; đã phát triển vượt khỏi phạm vi của các trò chơi trực tuyến (online games). Cùng với trình biên dịch &lt;a href=&quot;http://kripken.github.io/emscripten-site/&quot;&gt;EmScripten&lt;/a&gt;, ngày càng có nhiều thử nghiệm với WebAssembly được triển khai. Ví dụ như&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://hacks.mozilla.org/2017/09/bootcamps-webassembly-and-computer-vision/&quot;&gt;Thị giác máy tính&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Lập bản đồ 3D – Altus platform, &lt;a href=&quot;https://medium.com/google-earth/earth-on-web-the-road-to-cross-browser-7338e0f46278&quot;&gt;Google Earth&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.figma.com/webassembly-cut-figmas-load-time-by-3x-76f3f2395164&quot;&gt;Thiết kế giao diện người dùng&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jaukia/cld-js&quot;&gt;Phát hiện ngôn ngữ&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://eecs.qmul.ac.uk/~keno/60.pdf&quot;&gt;Trộn âm&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/brion/ogv.js/&quot;&gt;Hỗ trợ mã hoá video&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/shamadee/web-dsp&quot;&gt;Xử lý tính hiệu số&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jodogne/wasm-dicom-parser&quot;&gt;Hình ảnh y khoa&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kripken/ammo.js/&quot;&gt;Giả lập vật lý&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/vibornoff/asmcrypto.js&quot;&gt;Mã hoá&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Nén – &lt;a href=&quot;https://www.npmjs.com/package/zlib-asm&quot;&gt;zlib-asm&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.com/package/brotli&quot;&gt;Brotli&lt;/a&gt;, &lt;a href=&quot;https://github.com/kripken/lzma.js&quot;&gt;lzma&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://mathstud.io/&quot;&gt;Đại số máy tính&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;webassembly-có-vài-trò-như-thế-nào-đối-với-web&quot;&gt;WebAssembly có vài trò như thế nào đối với web?&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/webassembly/webassembly-2.png&quot; alt=&quot;&amp;quot;WebAssembly&amp;quot;&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nền tảng web có thể được tách ra làm 2 phần&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Phần máy ảo (virtual machine) để thực thi JavaScript code&lt;/li&gt;
+  &lt;li&gt;Phần Web APIs để điều khiển các chức năng của trình duyệt, thiết bị (&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model&quot;&gt;DOM&lt;/a&gt;, &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model&quot;&gt;CSSOM&lt;/a&gt;, &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API&quot;&gt;WebGL&lt;/a&gt;, IndexedDB, Web Audio API, etc)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hầu như từ trước đến giờ, cái máy ảo trong trình duyệt chỉ có thể tải và chạy JavaScript, và cũng đã đề cập ở trên ngôn ngữ độc quyền này cũng có một số nhược điểm. Sự ra đời WebAssembly không được tạo ra để thay thế JavaScript, mà để bổ sung cũng như hoạt đồng song song với JavaScript. Cả hai ngôn ngữ này mang lại nhiều lợi thế riêng của mình cho web. Ví dụ:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;JavaScript là một ngôn ngữ cấp cao, linh động và hiệu quả đủ để viết các ứng dụng web. Nó có nhiều lợi thế như là một ngôn ngữ có kiểu động (dynamically typed langugage), không yêu cầu phải biên dịch và một hệ sinh thái khổng lồ gồm nhiều khung-làm-việc (framework), thư viện (libraries) và đủ các chủng loại công cụ (tools chain).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Trong khi đó, WebAssembly là một ngôn ngữ cấp thấp, với một định dạng nhị phân nhỏ gọn (compact binary format), được thực thi với một tốc độ &lt;strong&gt;gần-tương-đương&lt;/strong&gt; với các ngôn ngữ cấp thấp. Đồng thời nó cũng cho phép chương trình được viết bằng các ngôn ngữ cấp thấp cho phép quản lý nhớ như C++ hoặc Rust có khả năng chạy trên nền web. Ngoài ra trong tương lai, WebAssembly cũng có mục tiêu là hỗ trợ các ngôn ngữ có bộ dọn rác (garbage collector), như Python hay Ruby.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Nói về tốc độ thực thi và hiệu năng, thì trên trang Hỏi-Đáp của WebAssembly cũng có nói rằng, WebAssembly được phân-tích cú-pháp (parse) nhanh hơn JavaScript 20 lần.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The kind of binary format being considered for WebAssembly can be natively decoded much faster than JavaScript can be parsed (experiments show more than 20× faster). On mobile, large compiled codes can easily take 20–40 seconds just to parse, so native decoding (especially when combined with other techniques like streaming for better-than-gzip compression) is critical to providing a good cold-load user experience.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Nguồn: &lt;a href=&quot;https://webassembly.org/docs/faq/&quot;&gt;WebAssembly FAQ&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Về cơ bản, WebAssembly là một ngôn ngữ khác và độc lập so với JavaScript, nhưng &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly&quot;&gt;WebAssembly JavaScript API&lt;/a&gt; đóng gói các WebAssembly code thành các hàm JavaScript để có thể được thực thi bình thường như JavaScript trong browser hay node.js.&lt;/p&gt;
+
+&lt;h1 id=&quot;nói-nhiều-quá-cho-xem-code-đi&quot;&gt;Nói nhiều quá, cho xem code đi!&lt;/h1&gt;
+
+&lt;p&gt;Thực chất WebAssembly không được thiết kể để viết bằng tay (mà để compile từ C++/Rust sang wasm), tuy nhiên chúng ta hoàn toàn có thể làm thủ công.&lt;/p&gt;
+
+&lt;p&gt;Trong đặc tả ngôn ngữ của WebAssembly (specification) có mô tả về hai định dạng của WebAssembly, một là dạng nhị phân nén &lt;strong&gt;WASM&lt;/strong&gt;, thường được đem đi phân phối. Dạng thứ hai là &lt;strong&gt;WAT&lt;/strong&gt; (WebAssembly Text Format), cũng rất gần với dạng nhị phân, nhưng thân thiện với loài người hơn.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;(module
+  (func (result i32)
+    (i32.const 42)
+  )
+  (export &quot;helloWorld&quot; (func 0))
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Đây là một hàm đơn giản trả về &lt;a href=&quot;https://www.urbandictionary.com/define.php?term=42&quot;&gt;hằng số 42&lt;/a&gt; (câu trả lời cho tất cả câu hỏi trong vũ trụ :-P). Để biên dịch code WAT ở trên ra WASM, ta cần cài &lt;a href=&quot;https://github.com/WebAssembly/wabt&quot;&gt;WABT (The WebAssembly Binary ToolKit)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Sau khi cài xong WABT, chỉ cần chạy lệnh sau từ console là ta có file &lt;code&gt;.wasm&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wat2wasm hello.wat -o hello.wasm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Sau khi được biên dịch thành định dạng &lt;code&gt;.wasm&lt;/code&gt;, ta có thể gọi hàm &lt;strong&gt;helloWorld&lt;/strong&gt; trong node.js như sau:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const { readFileSync } = require(&quot;fs&quot;);
+
+const run = async () =&amp;gt; {
+  const buffer = readFileSync(&quot;./hello.wasm&quot;);
+  const module =  await WebAssembly.compile(buffer);
+  const instance = await WebAssembly.instantiate(module);
+  console.log(instance.exports.helloWorld());
+};
+
+run();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Để chạy trong browser, ta cần chỉ cần nhúng script sau vào html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;fetch(&quot;hello.wasm&quot;).then(reponse =&amp;gt;
+    reponse.arrayBuffer()
+).then(bytes =&amp;gt;
+    WebAssembly.instantiate(bytes, {})
+).then(result =&amp;gt;
+    result.instance
+).then(instance =&amp;gt;
+    console.log(instance.exports.helloWorld())
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&quot;en&quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&quot;UTF-8&quot;&amp;gt;
+    &amp;lt;title&amp;gt;Hello WebAssembly&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;!-- The only thing that matters is the following line,
+    although having a valid HTML5 page is nice. --&amp;gt;
+    &amp;lt;script src=&quot;hello.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ngoài ra chúng ta có thể vọc thử WebAssembly trên &lt;a href=&quot;https://mbebenita.github.io/WasmExplorer/&quot;&gt;WebAssembly Explorer&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;tham-khảo&quot;&gt;Tham khảo&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/WebAssembly/Concepts&quot;&gt;WebAssembly Concepts&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running&quot;&gt;Loading and running WebAssembly code&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://blog.mozilla.org/blog/2017/11/13/webassembly-in-browsers/&quot;&gt;WebAssembly support now shipping in all major browsers&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://auth0.com/blog/7-things-you-should-know-about-web-assembly/&quot;&gt;7 Things You Should Know About WebAssembly&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://webassembly.org/docs/faq/&quot;&gt;WebAssembly - FAQ&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Hung Neox</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="webassembly" />
+      
+
+      
+        <summary type="html">Giới thiệu WebAssembly</summary>
+      
+
+      
+      
+    </entry>
+  
+    <entry>
+      <title type="html">WebAseembly - Phần 1: Giới thiệu</title>
+      <link href="http://localhost:4000/posts/webassembly-p1-gioi-thieu" rel="alternate" type="text/html" title="WebAseembly - Phần 1: Giới thiệu" />
+      <published>2018-12-06T01:00:00+02:00</published>
+      <updated>2018-12-06T01:00:00+02:00</updated>
+      <id>http://localhost:4000/posts/webassembly-p1-gioi-thieu</id>
+      <content type="html" xml:base="http://localhost:4000/posts/webassembly-p1-gioi-thieu">&lt;h1 id=&quot;giới-thiệu-webassembly&quot;&gt;Giới thiệu WebAssembly&lt;/h1&gt;
+
+&lt;p&gt;Về cơ bản, WebAssembly là một ngôn ngữ mới có thể chạy trên trình duyệt (dĩ nhiên là ngoài JavaScript ra). Nó được thiết kế để dịch ra từ ngôn ngữ low-level khác như C/C++ và Rust, nhưng không nhằm để thay thế JavaScript. Tuy bản thân JavaScript đủ mạnh để giải quyết đa số các vấn đề trên web. Nhưng hiện nay chúng ta cũng gặp phải một số vấn đề về hiệu năng (performance) của JavaScript, trong các ứng dụng cần xử lý nhiều như các ứng dụng trò-chơi lập-thể (3D games), &lt;a href=&quot;https://www.wikiwand.com/en/Virtual_reality&quot;&gt;thực-tế ảo (virtual reality)&lt;/a&gt; và &lt;a href=&quot;https://www.wikiwand.com/en/Augmented_reality&quot;&gt;thực-tế tăng-cường (augmented reality)&lt;/a&gt;, thị giác máy tính (computer vision), chỉnh sửa hình ảnh và phim v.v&lt;/p&gt;
+
+&lt;p&gt;WebAssembly có một ý nghĩa không nhỏ với nền tảng web nói chung, nó cho phép chương trình được viết bằng nhiều ngôn ngữ khác nhau có thể chạy trên web, mà trước đó là bất khả thi. Các modules WebAssembly không chỉ có thể được đưa vào các ứng dụng web (trên trình duyệt) mà cũng có thể được sử dụng trong các ứng dụng node.js. Cũng phải nói thêm là hiện nay, định dạng WASM đã được hỗ trợ rộng rãi trên các trình duyệt phổ biến như Chrome, Firefox, Safari và Edge.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/webassembly/browser-party.png&quot; alt=&quot;&amp;quot;Browser party&amp;quot;&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ngày nay, &lt;a href=&quot;https://webassembly.org/docs/use-cases/&quot;&gt;các ứng dụng của WebAssembly&lt;/a&gt; đã phát triển vượt khỏi phạm vi của các trò chơi trực tuyến (online games). Cùng với trình biên dịch &lt;a href=&quot;http://kripken.github.io/emscripten-site/&quot;&gt;EmScripten&lt;/a&gt;, ngày càng có nhiều thử nghiệm với WebAssembly được triển khai. Ví dụ như&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://hacks.mozilla.org/2017/09/bootcamps-webassembly-and-computer-vision/&quot;&gt;Thị giác máy tính&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Lập bản đồ 3D – Altus platform, &lt;a href=&quot;https://medium.com/google-earth/earth-on-web-the-road-to-cross-browser-7338e0f46278&quot;&gt;Google Earth&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.figma.com/webassembly-cut-figmas-load-time-by-3x-76f3f2395164&quot;&gt;Thiết kế giao diện người dùng&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jaukia/cld-js&quot;&gt;Phát hiện ngôn ngữ&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://eecs.qmul.ac.uk/~keno/60.pdf&quot;&gt;Trộn âm&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/brion/ogv.js/&quot;&gt;Hỗ trợ mã hoá video&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/shamadee/web-dsp&quot;&gt;Xử lý tính hiệu số&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jodogne/wasm-dicom-parser&quot;&gt;Hình ảnh y khoa&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kripken/ammo.js/&quot;&gt;Giả lập vật lý&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/vibornoff/asmcrypto.js&quot;&gt;Mã hoá&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Nén – &lt;a href=&quot;https://www.npmjs.com/package/zlib-asm&quot;&gt;zlib-asm&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.com/package/brotli&quot;&gt;Brotli&lt;/a&gt;, &lt;a href=&quot;https://github.com/kripken/lzma.js&quot;&gt;lzma&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://mathstud.io/&quot;&gt;Đại số máy tính&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;webassembly-có-vài-trò-như-thế-nào-đối-với-web&quot;&gt;WebAssembly có vài trò như thế nào đối với web?&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/posts/webassembly/webassembly-2.png&quot; alt=&quot;&amp;quot;WebAssembly&amp;quot;&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nền tảng web có thể được tách ra làm 2 phần&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Phần máy ảo (virtual machine) để thực thi JavaScript code&lt;/li&gt;
+  &lt;li&gt;Phần Web APIs để điều khiển các chức năng của trình duyệt, thiết bị (&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model&quot;&gt;DOM&lt;/a&gt;, &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model&quot;&gt;CSSOM&lt;/a&gt;, &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API&quot;&gt;WebGL&lt;/a&gt;, IndexedDB, Web Audio API, etc)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hầu như từ trước đến giờ, cái máy ảo trong trình duyệt chỉ có thể tải và chạy JavaScript, và cũng đã đề cập ở trên ngôn ngữ độc quyền này cũng có một số nhược điểm. Sự ra đời WebAssembly không được tạo ra để thay thế JavaScript, mà để bổ sung cũng như hoạt đồng song song với JavaScript. Cả hai ngôn ngữ này mang lại nhiều lợi thế riêng của mình cho web. Ví dụ:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;JavaScript là một ngôn ngữ cấp cao, linh động và hiệu quả đủ để viết các ứng dụng web. Nó có nhiều lợi thế như là một ngôn ngữ có kiểu động (dynamically typed langugage), không yêu cầu phải biên dịch và một hệ sinh thái khổng lồ gồm nhiều khung-làm-việc (framework), thư viện (libraries) và đủ các chủng loại công cụ (tools chain).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Trong khi đó, WebAssembly là một ngôn ngữ cấp thấp, với một định dạng nhị phân nhỏ gọn (compact binary format), được thực thi với một tốc độ &lt;strong&gt;gần-tương-đương&lt;/strong&gt; với các ngôn ngữ cấp thấp. Đồng thời nó cũng cho phép chương trình được viết bằng các ngôn ngữ cấp thấp cho phép quản lý nhớ như C++ hoặc Rust có khả năng chạy trên nền web. Ngoài ra trong tương lai, WebAssembly cũng có mục tiêu là hỗ trợ các ngôn ngữ có bộ dọn rác (garbage collector), như Python hay Ruby.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Nói về tốc độ thực thi và hiệu năng, thì trên trang Hỏi-Đáp của WebAssembly cũng có nói rằng, WebAssembly được phân-tích cú-pháp (parse) nhanh hơn JavaScript 20 lần.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The kind of binary format being considered for WebAssembly can be natively decoded much faster than JavaScript can be parsed (experiments show more than 20× faster). On mobile, large compiled codes can easily take 20–40 seconds just to parse, so native decoding (especially when combined with other techniques like streaming for better-than-gzip compression) is critical to providing a good cold-load user experience.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Nguồn: &lt;a href=&quot;https://webassembly.org/docs/faq/&quot;&gt;WebAssembly FAQ&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Về cơ bản, WebAssembly là một ngôn ngữ khác và độc lập so với JavaScript, nhưng &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly&quot;&gt;WebAssembly JavaScript API&lt;/a&gt; đóng gói các WebAssembly code thành các hàm JavaScript để có thể được thực thi bình thường như JavaScript trong browser hay node.js.&lt;/p&gt;
+
+&lt;h1 id=&quot;nói-nhiều-quá-cho-xem-code-đi&quot;&gt;Nói nhiều quá, cho xem code đi!&lt;/h1&gt;
+
+&lt;p&gt;Thực chất WebAssembly không được thiết kể để viết bằng tay (mà để compile từ C++/Rust sang wasm), tuy nhiên chúng ta hoàn toàn có thể làm thủ công.&lt;/p&gt;
+
+&lt;p&gt;Trong đặc tả ngôn ngữ của WebAssembly (specification) có mô tả về hai định dạng của WebAssembly, một là dạng nhị phân nén &lt;strong&gt;WASM&lt;/strong&gt;, thường được đem đi phân phối. Dạng thứ hai là &lt;strong&gt;WAT&lt;/strong&gt; (WebAssembly Text Format), cũng rất gần với dạng nhị phân, nhưng thân thiện với loài người hơn.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;(module
+  (func (result i32)
+    (i32.const 42)
+  )
+  (export &quot;helloWorld&quot; (func 0))
+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Đây là một hàm đơn giản trả về &lt;a href=&quot;https://www.urbandictionary.com/define.php?term=42&quot;&gt;hằng số 42&lt;/a&gt; (câu trả lời cho tất cả câu hỏi trong vũ trụ :-P). Để biên dịch code WAT ở trên ra WASM, ta cần cài &lt;a href=&quot;https://github.com/WebAssembly/wabt&quot;&gt;WABT (The WebAssembly Binary ToolKit)&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Sau khi cài xong WABT, chỉ cần chạy lệnh sau từ console là ta có file &lt;code&gt;.wasm&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;wat2wasm hello.wat -o hello.wasm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Sau khi được biên dịch thành định dạng &lt;code&gt;.wasm&lt;/code&gt;, ta có thể gọi hàm &lt;strong&gt;helloWorld&lt;/strong&gt; trong node.js như sau:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;const { readFileSync } = require(&quot;fs&quot;);
+
+const run = async () =&amp;gt; {
+  const buffer = readFileSync(&quot;./hello.wasm&quot;);
+  const module =  await WebAssembly.compile(buffer);
+  const instance = await WebAssembly.instantiate(module);
+  console.log(instance.exports.helloWorld());
+};
+
+run();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Để chạy trong browser, ta cần chỉ cần nhúng script sau vào html&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-javascript&quot;&gt;fetch(&quot;hello.wasm&quot;).then(reponse =&amp;gt;
+    reponse.arrayBuffer()
+).then(bytes =&amp;gt;
+    WebAssembly.instantiate(bytes, {})
+).then(result =&amp;gt;
+    result.instance
+).then(instance =&amp;gt;
+    console.log(instance.exports.helloWorld())
+);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&quot;en&quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&quot;UTF-8&quot;&amp;gt;
+    &amp;lt;title&amp;gt;Hello WebAssembly&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;!-- The only thing that matters is the following line,
+    although having a valid HTML5 page is nice. --&amp;gt;
+    &amp;lt;script src=&quot;hello.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ngoài ra chúng ta có thể vọc thử WebAssembly trên &lt;a href=&quot;https://mbebenita.github.io/WasmExplorer/&quot;&gt;WebAssembly Explorer&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;tham-khảo&quot;&gt;Tham khảo&lt;/h1&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/WebAssembly/Concepts&quot;&gt;WebAssembly Concepts&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running&quot;&gt;Loading and running WebAssembly code&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://blog.mozilla.org/blog/2017/11/13/webassembly-in-browsers/&quot;&gt;WebAssembly support now shipping in all major browsers&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://auth0.com/blog/7-things-you-should-know-about-web-assembly/&quot;&gt;7 Things You Should Know About WebAssembly&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://webassembly.org/docs/faq/&quot;&gt;WebAssembly - FAQ&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Hung Neox</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="webassembly" />
+      
+
+      
+        <summary type="html">Giới thiệu WebAssembly</summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>

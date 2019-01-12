@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<feed xmlns="http://www.w3.org/2005/Atom" >
+  <generator uri="https://jekyllrb.com/" version="3.7.4">Jekyll</generator>
+  <link href="http://localhost:4000/tag/web/feed.xml" rel="self" type="application/atom+xml" />
+  <link href="http://localhost:4000/" rel="alternate" type="text/html" />
+  <updated>2019-01-13T00:51:02+02:00</updated>
+  <id>http://localhost:4000/tag/web/feed.xml</id>
+
+  
+  
+  
+
+  
+    <title type="html">Koodibar | </title>
+  
+
+  
+    <subtitle>Koodibar - the code bar</subtitle>
+  
+
+  
+
+  
+    
+      
+    
+      
+    
+  
+
+  
+  
+
+  
+    <entry>
+      <title type="html">Tìm hiểu về CORS</title>
+      <link href="http://localhost:4000/posts/tim-hieu-ve-cors" rel="alternate" type="text/html" title="Tìm hiểu về CORS" />
+      <published>2018-12-08T00:00:00+02:00</published>
+      <updated>2018-12-08T00:00:00+02:00</updated>
+      <id>http://localhost:4000/posts/tim-hieu-ve-cors</id>
+      <content type="html" xml:base="http://localhost:4000/posts/tim-hieu-ve-cors">&lt;p&gt;&lt;img src=&quot;https://mdn.mozillademos.org/files/14295/CORS_principle.png&quot; alt=&quot;&amp;quot;CORS principle&amp;quot;&quot; title=&quot;CORS princile&quot; class=&quot;center-image&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;cross-origin-resource-sharing-cors&quot;&gt;Cross-Origin Resource Sharing (CORS)&lt;/h1&gt;
+
+&lt;p&gt;Trước khi có tiêu chuẩn về &lt;code&gt;CORS&lt;/code&gt;, thì không có cách nào để một trang web gửi request thông qua trình duyệt đến một domain khác. Đó là một cơ chế trong trình duyệt có từ Netscape Navigator 2 (1995) gọi là &lt;strong&gt;Same Origin Policy&lt;/strong&gt;, để hạn chế một &lt;code&gt;document&lt;/code&gt; hay một &lt;code&gt;script&lt;/code&gt; tương tác với tài nguyên không cùng một gốc hay &lt;code&gt;origin&lt;/code&gt;. Hai trang web có cùng một &lt;code&gt;origin&lt;/code&gt; là khi nó có chung &lt;code&gt;protocol&lt;/code&gt;, &lt;code&gt;port&lt;/code&gt; và &lt;code&gt;host&lt;/code&gt;. Khác subdirectory cũng coi là khác &lt;code&gt;origin&lt;/code&gt;.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;URL&lt;/th&gt;
+      &lt;th&gt;Outcome&lt;/th&gt;
+      &lt;th&gt;Reason&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://store.company.com/dir2/other.html&lt;/td&gt;
+      &lt;td&gt;Success&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://store.company.com/dir/inner/another.html&lt;/td&gt;
+      &lt;td&gt;Success&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;https://store.company.com/secure.html&lt;/td&gt;
+      &lt;td&gt;Failure&lt;/td&gt;
+      &lt;td&gt;Different protocol&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://store.company.com:81/dir/etc.html&lt;/td&gt;
+      &lt;td&gt;Faillure&lt;/td&gt;
+      &lt;td&gt;Different port&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;http://news.company.com/dir/other.html&lt;/td&gt;
+      &lt;td&gt;Failture&lt;/td&gt;
+      &lt;td&gt;Different host&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Cơ chế này nhằm hạn chế các cuộc tấn công Cross-site scripting (XSS), khi attacker nhúng cấy một đoạn mã vào các websites để gửi các thông tin đánh cắp được về máy chủ khác hoặc, thực hiện giao dịch bằng thông tin vừa ăn cắp được (từ cookies của trình duyệt etc).&lt;/p&gt;
+
+&lt;p&gt;Và một trong những lợi ích to lớn khác là nó cung cấp một cơ chế (yếu) để ngăn các website khác ăn cắp traffic của bạn một cách quá dễ dàng :-)&lt;/p&gt;
+
+&lt;h1 id=&quot;cors-http-headers&quot;&gt;CORS HTTP headers&lt;/h1&gt;
+&lt;p&gt;CORS sử dụng một số HTTP headers trong cả request và response để cho phép việc truy xuất tài nguyên không cùng một &lt;code&gt;origin&lt;/code&gt; có thể xảy ra, mà vẫn đảm bảo độ bảo mật.&lt;/p&gt;
+
+&lt;p&gt;Về cơ bản thì từ phía server sẽ thông báo cho trình duyệt biết là server chỉ chấp nhận resquest từ &lt;code&gt;origin&lt;/code&gt; nào và những phương thức HTTP nào.&lt;/p&gt;
+
+&lt;h2 id=&quot;access-control-allow-origin&quot;&gt;Access-Control-Allow-Origin&lt;/h2&gt;
+
+&lt;p&gt;Đây là header được trả về từ phía server, để thông báo cho browser biết domain nào được truy xuất tài nguyên từ server đó. Header này có thể được thiết lập giá trị:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;*&lt;/code&gt; chấp nhận request từ tất tần tật các domain&lt;/li&gt;
+  &lt;li&gt;hoặc một domain đầy đủ (https://example.com)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;access-control-allow-headers&quot;&gt;Access-Control-Allow-Headers&lt;/h2&gt;
+&lt;p&gt;Bằng header này Server sẽ thông báo cho trình duyệt biết những request header nào được phía server hỗ trợ. Ví dụ như (&lt;code&gt;x-authentication-token&lt;/code&gt;, &lt;code&gt;Authorization&lt;/code&gt; v.v). Nếu client gửi những header khác không nằm trong danh sách này sẽ bị server bỏ qua.&lt;/p&gt;
+
+&lt;h2 id=&quot;access-control-allow-methods&quot;&gt;Access-Control-Allow-Methods&lt;/h2&gt;
+
+&lt;p&gt;Đây là một danh sách chứa các phương thức HTTP mà server cho phép client sử dụng (vd: &lt;code&gt;GET&lt;/code&gt;, &lt;code&gt;POST&lt;/code&gt;, &lt;code&gt;DELETE&lt;/code&gt;), và sách này phân cách bằng dấu phẩy. Ví dụ có những trường hợp server chỉ cho phép truy xuất, nhưng không cho phép cập nhật hoặc xoá tài nguyên chẳng hạn.&lt;/p&gt;
+
+&lt;h2 id=&quot;origin&quot;&gt;Origin&lt;/h2&gt;
+
+&lt;p&gt;Header này được đính kèm theo mỗi request đến server, nó được sinh ra từ server mà nơi tài liệu được trả về. Và vì lý do bảo mật, trình duyệt không cho phép ghi đè, thay đổi gía trị của header này.&lt;/p&gt;
+
+&lt;h2 id=&quot;preflight-request&quot;&gt;Preflight request&lt;/h2&gt;
+
+&lt;p&gt;Một cái preflight request là một request được gửi từ phía trình duyệt để thăm dò xem server có hiểu/ hỗ trợ giao thức CORS hay không. Nó được tự động gởi bởi trình duyệt. Việc của phía server là trả về những headers cần thiết cho phía client.&lt;/p&gt;
+
+&lt;p&gt;Ví dụ, phía client có thể gửi một OPTIONS request để xem server có cho phép &lt;code&gt;DELETE&lt;/code&gt; tài nguyên trên server hay không.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;OPTIONS /resource/foo 
+Access-Control-Request-Method: DELETE 
+Access-Control-Request-Headers: origin, x-requested-with
+Origin: https://foo.bar.org
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Server sẽ phản hồi cho phía client những thông tin cần thiết ví dụ như header &lt;code&gt;Access-Control-Allow-Methods&lt;/code&gt; chứa những phương thức HTTP mà client được phép thực hiện.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;HTTP/1.1 200 OK
+Content-Length: 0
+Connection: keep-alive
+Access-Control-Allow-Origin: https://foo.bar.org
+Access-Control-Allow-Methods: POST, GET, OPTIONS, DELETE
+Access-Control-Max-Age: 86400
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;làm-thế-nào-để-sửa-lỗi-cors&quot;&gt;Làm thế nào để sửa lỗi “CORS”&lt;/h1&gt;
+
+&lt;p&gt;Như đã nói ở trên, đây không thực sự là một lỗi kỹ thuật. Nó là cơ chế của thế giới web để đảm bảo vệ người dùng. Có một số cách để giải quyết vấn đề này:&lt;/p&gt;
+
+&lt;h2 id=&quot;a-cách-tiêu-chuẩn&quot;&gt;a) Cách tiêu chuẩn&lt;/h2&gt;
+&lt;p&gt;Để “fix lỗi” này là thêm domain của bạn vào &lt;code&gt;Access-Control-Allow-Origin&lt;/code&gt; header của server. Khi lập trình front-end, bạn nên sử dụng một domain để code, ví dụ &lt;code&gt;myawesomeapp.test&lt;/code&gt; thay vì dùng &lt;code&gt;localhost:3000&lt;/code&gt;. (Hoặc đơn giản hơn là cấu hình để server trả về &lt;code&gt;Access-Control-Allow-Origin: *&lt;/code&gt;. Nhưng cách này không được khuyến khích.)&lt;/p&gt;
+
+&lt;h2 id=&quot;b-cách-thứ-hai&quot;&gt;b) Cách thứ hai&lt;/h2&gt;
+&lt;p&gt;Hoặc nếu như bạn hoàn toàn không thể kiểm soát được backend (không có contact của backend dev) và cần một giải pháp tạm thời, thì bạn có thể tắt chức năng bảo mật của trình duyệt&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chrome --disable-web-security --user-data-dir
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Lưu ý&lt;/strong&gt; rằng nó áp dụng cho tất cả các trang web, nên nếu bạn quên mở nó lại thì bạn có thể bị dính chưởng XSS.&lt;/p&gt;
+
+&lt;h2 id=&quot;c-cách-thứ-ba&quot;&gt;c) Cách thứ ba&lt;/h2&gt;
+&lt;p&gt;Là nếu như bạn hoàn toàn không thể làm gì được thì có thể viết một proxy đứng ở giữa front-end và server bạn cần truy xuất tài nguyên. Nói chung thì chỉ có browser cản bạn gởi request thôi, chứ dùng &lt;code&gt;curl&lt;/code&gt; hay truy xuất thẳng trên browser thì vẫn bình thường. Cho nên bạn hoàn toàn có thể dựng một server để trung chuyển request và response mà không gặp vấn để gì. Thật ra mấu chốt là nếu client không gửi &lt;code&gt;Orign&lt;/code&gt; header đến server thì server không check nó có phải là request CORS không.&lt;/p&gt;
+
+&lt;p&gt;Ví dụ đây là một hàm từ package &lt;a href=&quot;https://github.com/digiaonline/lumen-cors&quot;&gt;lumen-cors&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-php&quot;&gt;/**
+* @inheritdoc
+*/
+public function isCorsRequest(Request $request)
+{
+    return $request-&amp;gt;headers-&amp;gt;has('Origin');
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@baphemot/understanding-cors-18ad6b478e2b&quot;&gt;Bartosz Szczeciński, Understanding CORS&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy&quot;&gt;Mozilla, Same-origin policy&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS&quot;&gt;Mozilla, Cross-Origin Resource Sharing (CORS)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request&quot;&gt;Mozilla, Preflight request&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content>
+
+      
+      
+      
+      
+      
+
+      <author>
+          <name>Hung Neox</name>
+        
+        
+      </author>
+
+      
+
+      
+        <category term="web" />
+      
+        <category term="security" />
+      
+
+      
+        <summary type="html"></summary>
+      
+
+      
+      
+    </entry>
+  
+</feed>
