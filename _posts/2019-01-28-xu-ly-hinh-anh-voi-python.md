@@ -159,6 +159,10 @@ if __name__ == "__main__":
 
 [Guassian blur](https://computergraphics.stackexchange.com/questions/39/how-is-gaussian-blur-implemented) Phương pháp làm mờ hình ảnh sử dụng Gussian function để giảm nhiễu và chi tiết trên bức ảnh.
 
+Giải thích ngắn gọn thì cái ma trận 3x3 trong hình được gọi là `kernel`. Chúng ta áp dụng cái filter như hình cho từng pixel thì cuối cùng chúng ta sẽ có một hình đã được làm mờ.
+
+!["Gaussian blur"](/assets/posts/image-proccessing-python/gaussian-blur.jpg)
+
 {% highlight python %}
 # Gaussian blur
 new_img = img.filter(ImageFilter.GaussianBlur(radius=50))
@@ -218,6 +222,8 @@ cv2.destroyAllWindows()
 
 
 ## Vẽ countour của ảnh
+
+Contour trong image proccesing là những đường nối những điểm liền nhau tạo thành hình dáng của vật trong ảnh (không phải contour trong trang điểm). Nó là một công cụ rất hữu ích trong nhận dạng và định danh các vật thể trong hình (object detection and recognition).
 
 {% highlight python %}
 import numpy as np
