@@ -106,7 +106,7 @@ Trong đó thì factor là một giá trị để kiểm soát độ tương ph�
 
 Mình cũng không rõ Pillow thay đổi độ tương phản bằng cách nào, nhưng về lý thuyết chung thì làm tăng/giảm [contrast](https://www.wikiwand.com/en/Contrast_(vision)) là làm tối (darkening) nhưng pixel có giá trị dưới một mức nào đó, và làm sáng (lightening) những pixels có giá trị trên một mức nào đó. Độ chênh lệch này sẽ làm tăng hay giảm sự tương phản.
 
-Các bạn có thể xem thêm công thức thay đổi độ tương phản của pixel [ở đây](https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/), nhưng kết quả từ công thức này không ổn lắm.
+Các bạn có thể xem thêm công thức thay đổi độ tương phản của pixel [ở đây](https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/), nhưng kết quả từ công thức này không ổn lắm nên mình không post kết quả ở đây.
 
 ## Thay đổi độ sáng (brightness)
 
