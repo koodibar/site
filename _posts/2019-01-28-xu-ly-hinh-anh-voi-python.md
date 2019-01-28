@@ -159,7 +159,7 @@ if __name__ == "__main__":
 
 [Guassian blur](https://computergraphics.stackexchange.com/questions/39/how-is-gaussian-blur-implemented) Phương pháp làm mờ hình ảnh sử dụng Gussian function để giảm nhiễu và chi tiết trên bức ảnh.
 
-Giải thích ngắn gọn thì cái ma trận 3x3 trong hình được gọi là `kernel`. Chúng ta áp dụng cái filter như hình cho từng pixel thì cuối cùng chúng ta sẽ có một hình đã được làm mờ.
+Giải thích ngắn gọn thì cái ma trận 3x3 trong hình được gọi là `kernel`. Chúng ta áp dụng cái filter như hình cho từng pixel thì cuối cùng chúng ta sẽ có một hình đã được làm mờ. Để sẽ giải thích chi tiết ở các bài sau.
 
 !["Gaussian blur"](/assets/posts/image-proccessing-python/gaussian-blur.jpg)
 
