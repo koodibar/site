@@ -12,6 +12,7 @@ cover: assets/posts/graphql/graphql-cover.jpeg
 subclass: 'post tag-getting-started'
 class: post-template
 comments: true
+published: false
 ---
 
 # GraphQL là gì - có ăn được không?
