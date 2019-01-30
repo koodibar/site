@@ -34,7 +34,7 @@ Trong toàn bài này mình sẽ sử dụng ảnh này làm ảnh gốc để c
 
 ## 1. Chuyển ảnh màu sang grayscale
 
-Về cơ bản thì [grayscale](https://homepages.inf.ed.ac.uk/rbf/HIPR2/gryimage.htm) (hình trắng đen) là loại ảnh mà tất cả pixels chỉ mang thông tin về độ sáng, hay nói cách khác chỉ thể hiện các sắc thái của màu xám. Trong không gian màu RGB, thì màu xám là màu mà các sắc tố Red, Green, Blue có giá trị bằng nhau. Ví dụ màu đỏ là `rgb(255, 0, 0)` thì nếu ta muốn chuyển nó sang xám thì lấy giá trị trung bình của 3 sub-pixel và tạo thành 1 pixel mới `rgb(85, 85, 85)`
+Về cơ bản thì [grayscale](https://homepages.inf.ed.ac.uk/rbf/HIPR2/gryimage.htm) (hình trắng đen) là loại ảnh mà tất cả pixels chỉ mang thông tin về độ sáng, hay nói cách khác chỉ thể hiện các sắc thái của màu xám (Luminance mode). Trong không gian màu RGB, thì màu xám là màu mà các sắc tố <span style="color:red">Red</span>, <span style="color:green">Green</span>, <span style="color:blue">Blue</span> có giá trị bằng nhau. Ví dụ màu đỏ là `rgb(255, 0, 0)` thì nếu ta muốn chuyển nó sang xám thì lấy giá trị trung bình của 3 sub-pixels và tạo thành 1 pixel mới `rgb(85, 85, 85)`
 
 ### 1.1 Code thủ công
 
@@ -162,6 +162,7 @@ if __name__ == "__main__":
 Giải thích ngắn gọn thì cái ma trận 3x3 trong hình được gọi là `kernel`. Chúng ta áp dụng cái filter như hình cho từng pixel thì cuối cùng chúng ta sẽ có một hình đã được làm mờ. Để sẽ giải thích chi tiết ở các bài sau.
 
 !["Gaussian blur"](/assets/posts/image-proccessing-python/gaussian-blur.jpg)
+*Nguồn [Digital Image processing](https://www.slideshare.net/OVISOPTOamir/image-processing-42285753)
 
 {% highlight python %}
 # Gaussian blur
