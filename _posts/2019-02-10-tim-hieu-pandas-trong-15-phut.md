@@ -12,6 +12,7 @@ cover: assets/posts/nhap-mon-pandas/cover.jpg
 subclass: 'post tag-getting-started'
 class: post-template
 comments: true
+toc: true
 ---
 
 # Giới thiệu về pandas 
@@ -20,7 +21,7 @@ comments: true
 
 Thư viện pandas rất phù hợp để xử lý các dữ liệu dạng bảng (tabular data). Không những nó hỗ trợ đọc dữ liệu từ [nhiều nguồn khác nhau](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html) như text, csv, excel, json, sql, hdf5, v.v. Mà nó còn giúp chúng ta kết hợp, thao tác và phân tích dữ liệu từ nhiều nguồn này lại. Có thể nói là nó giúp làm hàng tá thứ mà chúng ta muốn trên các nguồn dữ liệu thô một cách thật dễ dàng.
 
-# Các kiểu dữ liệu trong Pandas
+# Các kiểu dữ liệu trong pandas
 
 Trong pandas có hai kiểu dữ liệu chính là **Series** và đặc biệt là **DataFrame**. Pandas cũng cung cấp rất nhiều chức năng tiện lợi và hiệu suất cao cho DataFrame, chúng ta có thể tìm hiểu thêm về các chức năng này bên dưới.
 

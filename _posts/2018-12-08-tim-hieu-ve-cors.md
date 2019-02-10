@@ -13,6 +13,7 @@ subclass: 'post tag-getting-started'
 class: post-template
 comments: true
 published: true
+toc: true
 ---
 
 !["CORS principle"](https://mdn.mozillademos.org/files/14295/CORS_principle.png "CORS princile"){: .center-image }

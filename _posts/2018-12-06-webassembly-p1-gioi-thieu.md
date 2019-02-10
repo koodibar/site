@@ -12,6 +12,7 @@ cover: assets/posts/webassembly/game-changer.jpg
 subclass: 'post tag-getting-started'
 class: post-template
 comments: true
+toc: true
 ---
 
 # Giới thiệu WebAssembly
