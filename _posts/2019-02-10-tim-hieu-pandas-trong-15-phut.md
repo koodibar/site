@@ -189,7 +189,7 @@ biostats_df.groupby('Sex').mean()
 
 ### Vẽ biểu đồ phân bố giá trị của một cột
 
-**Bar charts**
+**Bar chart**
 
 {% highlight python %}
 import matplotlib.pyplot as plt
@@ -198,7 +198,7 @@ biostats_df['Height'].value_counts().plot(kind='bar')
 
 !["Bars"](/assets/posts/nhap-mon-pandas/height-bars.jpg)
 
-**Pie charts**
+**Pie chart**
 
 {% highlight python %}
 import matplotlib.pyplot as plt
