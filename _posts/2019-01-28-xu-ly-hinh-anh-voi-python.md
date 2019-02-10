@@ -12,6 +12,7 @@ cover: assets/posts/image-proccessing-python/cover-rick-morty.png
 subclass: 'post tag-getting-started'
 class: post-template
 comments: true
+toc: true
 ---
 
 # Một chút căn bản về ảnh kỹ thuật số (digital image)
@@ -79,7 +80,7 @@ Kết quả hơi khác so code thủ công ở trên một xíu, ví dụ cái m
 
 !["Grayscale Pillow"](/assets/posts/image-proccessing-python/rick-morty-l.png)
 
-## Thay đổi độ tương phản (contrast)
+## 2. Thay đổi độ tương phản (contrast)
 
 Để thay đổi độ tương phản của pixel bằng `Pillow` khá đơn giản
 
@@ -108,7 +109,7 @@ Mình cũng không rõ Pillow thay đổi độ tương phản bằng cách nào
 
 Các bạn có thể xem thêm công thức thay đổi độ tương phản của pixel [ở đây](https://www.dfstudios.co.uk/articles/programming/image-programming-algorithms/image-processing-algorithms-part-5-contrast-adjustment/), nhưng kết quả từ công thức này không ổn lắm nên mình không post kết quả ở đây.
 
-## Thay đổi độ sáng (brightness)
+## 3. Thay đổi độ sáng (brightness)
 
 Để thay đổi độ sáng của ảnh bằng Pillow cũng rất đơn giản, ta làm như sau:
 
@@ -155,7 +156,7 @@ if __name__ == "__main__":
 !["Brightness"](/assets/posts/image-proccessing-python/rick-morty-brightness.png)
 
 
-## Làm mờ (Gaussian blur)
+## 4. Làm mờ (Gaussian blur)
 
 [Guassian blur](https://computergraphics.stackexchange.com/questions/39/how-is-gaussian-blur-implemented) Phương pháp làm mờ hình ảnh sử dụng Gussian function để giảm nhiễu và chi tiết trên bức ảnh.
 
@@ -173,7 +174,7 @@ new_img.show()
 
 !["Gaussian blur"](/assets/posts/image-proccessing-python/rick-morty-gaussian-blur-20.png)
 
-## Làm tối 4 góc (vignette) sử dụng OpenCV và numpy
+## 5. Làm tối 4 góc (vignette) sử dụng OpenCV và numpy
 
 {% highlight python %}
 import cv2

@@ -41,7 +41,7 @@ permalink: /posts/:title
 
 # gems and other configs
 plugins_dir: [_plugins]
-plugins: [jekyll-paginate, jekyll-feed]
+plugins: [jekyll-paginate, jekyll-feed, jekyll-toc]
 
 feed:
   path: feed.xml

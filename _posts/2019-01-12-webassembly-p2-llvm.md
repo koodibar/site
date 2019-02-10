@@ -12,6 +12,7 @@ cover: assets/posts/webassembly/webassembly-illustration.png
 subclass: 'post tag-getting-started'
 class: post-template
 comments: true
+toc: true
 ---
 
 # Giới thiệu sơ lược
