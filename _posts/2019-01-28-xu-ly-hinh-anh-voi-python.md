@@ -8,7 +8,7 @@ categories: [graphq]
 author: hungneox
 tags : [python, image-proccessing, opencv]
 description: "Xử lý hình ảnh bằng Python (có sử dụng Pillow và OpenCV)"
-cover: assets/posts/image-proccessing-python/cover-rick-morty.png
+cover: assets/posts/image-proccessing-python/cover-rick-morty.jpg
 subclass: 'post tag-getting-started'
 class: post-template
 comments: true
