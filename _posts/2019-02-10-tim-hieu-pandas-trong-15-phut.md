@@ -2,7 +2,7 @@
 layout: post
 current: post
 title: "Tìm hiểu Pandas trong 15 phút" 
-date: 2019-01-28 22:00
+date: 2019-02-10 22:00
 navigation: true
 categories: [python, pandas]
 author: hungneox
