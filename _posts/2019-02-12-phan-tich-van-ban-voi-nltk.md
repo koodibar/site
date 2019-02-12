@@ -1,7 +1,7 @@
 ---
 layout: post
 current: post
-title: "Nhập môn xử lý ngôn ngữ tự nhiên bằng NLTK" 
+title: "Cơ bản về phân tích văn bản bằng NLTK" 
 date: 2019-02-12 0:00
 navigation: true
 categories: [python, nltk]
@@ -15,17 +15,9 @@ comments: true
 toc: true
 ---
 
-# Xử lý ngôn ngữ tự nhiên (Natural lanague processing) là gì?
+# Phân tích văn bản (text analysis) là gì?
 
-Xử lý ngôn ngữ tự nhiên (từ đây gọi tắt là NLP) là một nhánh của khoa học máy tính, mà cụ thể là trí tuệ nhân tạo, tập trung vào các ứng dụng thao tác trên ngôn ngữ tự nhiên của con người bao gồm tiếng nói, chữ viết. Có thể thấy các ứng dụng của NLP trong đời sống hàng ngày như:
-
-- Nhận dạng giọng nói như: Siri của Apple, Alexa của Amazon v.v
-- Nhận dạng chữ viết: OCR
-- Dịch tự động: Google Translate
-- Chặn spam: Google spam filter
-- Tìm kiếm thông tin: full text search engines như Solr, ElasticSearch
-- Tóm tắt / phân loại văn bản
-- Khai phá dữ liệu (data mining)
+Phân tích văn bản là một phần của xử lý ngôn ngữ tự nhiên (Natural Language Proccessing - NLP), nó là một quá trình phân tích (parsing) văn bản thô để thu thập được những thông tin hữu ích từ các văn bản phi cấu trúc (free text). Ví dụ như phân tích các tweets để tìm ra xu hướng phổ biến trên twitter, hay Amazon có thể phân loại được review của khách hàng cho một sản phẩm là tích cực hay tiêu cực (xem thêm [Detect sentiment from customer reviews using Amazon Comprehend](https://aws.amazon.com/blogs/machine-learning/detect-sentiment-from-customer-reviews-using-amazon-comprehend/)).
 
 # Thư viện NLTK 
 
@@ -41,7 +33,7 @@ pip install nltk
 
 # Một số tính năng của NLTK 
 
-## 1 Tokenization
+## 1. Tokenization
 *Tokenization* là bước đầu tiên của quá trình phân tích xử lý văn bản. Quá trình này bao gồm việc bóc tách, bẻ nhỏ những đoạn văn thành những thành phần nhỏ hơn như là câu và từ.
 
 Ví dụ ta có đoạn văn bản sau:
@@ -117,3 +109,29 @@ plt.show()
 {% endhighlight %}
 
 !["Word count plot"](/assets/posts/nhap-mon-nltk/wcplot.png)
+
+## 3. Stopwords
+
+Stopwords là những từ được coi là gây nhiễu hay vô nghĩa trong trong. Ví dụ như a, an, the, am, are, this v.v. Thường trong quá trình index dữ liệu, các search engine (như ElasticSearch) sẽ loại bỏ các stopwords.
+
+Trong NLTK có định nghĩa sẵn các stopwords cho từng ngôn ngữ. Ví dụ để lấy tất cả các stopword trong tiếng Anh
+
+{% highlight python %}
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+stop_words=set(stopwords.words("english"))
+{% endhighlight %}
+
+
+```
+{"mightn't", 'o', "didn't", "wouldn't", 'what', 'any', 'here', 'ourselves', 'during', "weren't", 'do', 'its', 'below', 'shan', 'there', 'some', 'hers', 'our', 'why', "you'll", 'herself', 'mightn', 'a', 'their', 'these', 're', "haven't", 'then', "mustn't", 'm', 'myself', 've', 'whom', 'out', 'above', 'the', 'himself', 'hasn', 'am', 'is', "hadn't", "shouldn't", 'doesn', 'too', "you've", "wasn't", "needn't", 'further', 'an', "you're", 'no', 'up', 'will', 'me', "it's", 'does', 'as', 'be', 'yourselves', 'few', 'she', 'down', 'about', 'are', 'her', 'while', 'other', 'ours', 'can', 'haven', 'where', 'yourself', "you'd", 'only', 'not', 'most', "couldn't", "shan't", 'won', 'was', 'has', 'shouldn', 'theirs', 'couldn', 'll', 'yours', 'how', 'his', "isn't", 'ma', 'now', 'themselves', "should've", 'nor', 'them', 'been', 'those', 'or', 'at', 'wasn', 'same', 'such', 's', 'which', 'on', 'don', 'aren', 'just', 'each', 'from', 'to', 'my', 'but', 'it', 'i', 'more', 't', 'had', "doesn't", 'before', "don't", 'have', 'being', 'once', 'so', 'very', 'should', 'over', 'doing', 'isn', 'all', 'needn', 'under', 'when', "she's", 'between', 'for', 'again', 'he', 'through', 'ain', 'hadn', 'off', 'd', 'were', 'against', 'in', 'your', 'into', 'with', 'because', 'didn', 'and', 'y', 'mustn', "aren't", 'this', 'having', "hasn't", 'weren', 'both', 'than', 'you', 'by', 'wouldn', "that'll", 'we', 'that', 'did', 'of', 'if', 'him', 'itself', 'they', "won't", 'own', 'until', 'after', 'who'}
+```
+
+Mặc định thì NLTK chỉ hỗ trợ một số ngôn ngữ ở Châu Âu:
+
+- english
+- german
+- swedish
+- ...
+
+## 4. Stemming
