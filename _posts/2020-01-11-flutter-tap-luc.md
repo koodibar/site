@@ -15,8 +15,6 @@ comments: true
 toc: true
 ---
 
-*Flutter tạp lục = miscellaneous notes about flutter, dựa theo cách đặt tên [Phủ biên tạp lục của Lê Quý Đôn](https://www.wikiwand.com/vi/Ph%E1%BB%A7_bi%C3%AAn_t%E1%BA%A1p_l%E1%BB%A5c).
-
 # Tổng quan về flutter
 
 > “Flutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.” - Google, flutter.dev
@@ -70,3 +68,7 @@ Nếu bạn là khởi nghiệp gia và muốn ra được sản phẩm càng nh
     - [Awesome Flutter](https://github.com/Solido/awesome-flutter): Một GitHub repo với danh sách những bài viết, videos, components, utilities v.v
     - [It’s all widgets!](https://itsallwidgets.com/): Một danh sách mở về những ứng dụng được built bằng flutter.
     - [Flutter Community](https://medium.com/flutter-community): Trang medium về articles, tutorials, và các thứ khác.
+
+
+# Footnotes:
+*Flutter tạp lục = miscellaneous notes about flutter, dựa theo cách đặt tên [Phủ biên tạp lục của Lê Quý Đôn](https://www.wikiwand.com/vi/Ph%E1%BB%A7_bi%C3%AAn_t%E1%BA%A1p_l%E1%BB%A5c).
