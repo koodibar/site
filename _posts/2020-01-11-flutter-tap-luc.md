@@ -32,13 +32,13 @@ Triết lý của flutter là giữ mọi default behavior của platform ([plat
 
 Hiện tại dù flutter chủ yếu được dùng để phát triển ứng dụng di động nhưng flutter vẫn support môi trường [web](https://flutter.dev/web) và [desktop](https://flutter.dev/desktop).
 
-# Ngôn ngữ Dart
+# Ngôn ngữ [Dart](https://dart.dev/)
 
 !["Dart"](/assets/posts/flutter-intro/dart-demo.gif)
 
 Dart là một ngôn ngữ lập trình không mới, nói một cách nào đó nó là một thất bại của Google trong nỗ lực nhằm thay thế vị trí của JavaScript trên trình duyệt.
 
-Dart được giới thiệu lần đầu tiên ở GOTO conference tại Aarhus, Đan Mạch vào 10/12/2011. Ngôn ngữ này có syntax giống như C và có một bộ dọn rác (a.k.a garbage collector). Dart khá giống Java hay Typescript, nó có *strong type system* (dịch sang tiếng Việt là "*Hệ thống Kiểu mạnh*"). Điểm ưu việt hơn so với JavaScript là Dart có thể được biên dịch (compile) ra thẳng mã máy ([Ahead-of-time compilation](https://www.wikiwand.com/en/Ahead-of-time_compilation)) đồng thời cũng có thể biên dịch tức thời ([JIT compilation](https://www.wikiwand.com/en/Just-in-time_compilation)) chạy trên Dart VM ([xem thêm](https://mrale.ph/dartvm/)). Cho nên nó vừa thuận tiện cho việc phát triển ứng dụng cũng như mang lại performance cao cho production app.
+Dart được giới thiệu lần đầu tiên ở GOTO conference tại Aarhus, Đan Mạch vào 10/12/2011. Ngôn ngữ này có syntax giống như C và có một bộ dọn rác (hay **Garbage collector**). Dart khá giống Java hay Typescript, nó có *strong type system* (hay "*Hệ thống Kiểu mạnh*"). Điểm ưu việt hơn so với JavaScript là Dart có thể được biên dịch (compile) ra thẳng mã máy ([Ahead-of-time compilation](https://www.wikiwand.com/en/Ahead-of-time_compilation)) đồng thời cũng có thể biên dịch tức thời ([JIT compilation](https://www.wikiwand.com/en/Just-in-time_compilation)) chạy trên Dart VM ([xem thêm](https://mrale.ph/dartvm/)). Cho nên nó vừa thuận tiện cho việc phát triển ứng dụng cũng như mang lại performance cao cho production app.
 
 # Thinking in widgets
 
