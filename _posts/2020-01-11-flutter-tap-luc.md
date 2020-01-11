@@ -70,5 +70,4 @@ Nếu bạn là khởi nghiệp gia và muốn ra được sản phẩm càng nh
     - [Flutter Community](https://medium.com/flutter-community): Trang medium về articles, tutorials, và các thứ khác.
 
 
-# Footnotes:
-*Flutter tạp lục = miscellaneous notes about flutter, dựa theo cách đặt tên [Phủ biên tạp lục của Lê Quý Đôn](https://www.wikiwand.com/vi/Ph%E1%BB%A7_bi%C3%AAn_t%E1%BA%A1p_l%E1%BB%A5c).
+**Footnotes**: *Flutter tạp lục = miscellaneous notes about flutter, dựa theo cách đặt tên [Phủ biên tạp lục của Lê Quý Đôn](https://www.wikiwand.com/vi/Ph%E1%BB%A7_bi%C3%AAn_t%E1%BA%A1p_l%E1%BB%A5c).
