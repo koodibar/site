@@ -25,8 +25,7 @@ Về mặt tổng quát thì flutter cũng tương tự như React đều sử d
 
 !["Navigation iOS back"](/assets/posts/flutter-intro/navigation-ios-back.gif)
 
-Triết lý của flutter là giữ mọi default behavior của platform ([platform adaptation](https://flutter.dev/docs/resources/platform-adaptations)). Tuỳ từng OS, mà mặc định flutter sẽ giữ nguyên các behavior, transition, typography, gestures đúng với nguyên gốc. Điều này mang lại cảm giác "native" cho ứng dụng mặc dù flutter không dùng OEM widgets.
-
+Triết lý của flutter là giữ mọi default behavior của platform ([platform adaptation](https://flutter.dev/docs/resources/platform-adaptations)). Tuỳ từng OS, mà mặc định flutter sẽ giữ nguyên các behavior, transition, typography, gestures đúng với nguyên gốc cuả hệ điều hành. Điều này mang lại cảm giác "native" cho ứng dụng mặc dù flutter không dùng OEM widgets.
 
 
 !["Dart"](/assets/posts/flutter-intro/platform.png)
@@ -50,6 +49,14 @@ Thế giới flutter xoay quanh widgets, gần như mọi thứ trong flutter đ
 - Stateful Widget:  Vẫn là immutable những được redraw sau khi `setState(()=>{})` được gọi.
 
 Flutter được ship với một set các widgets dựa trên thiết kế [Material](https://flutter.dev/docs/development/ui/widgets/material) của Google và [Cupertino](https://flutter.dev/docs/development/ui/widgets/cupertino) của Apple. Mặc dù vậy, nó không tự thay đổi tuỳ theo target OS, một khi bạn chọn build app theo kiểu material design thì nó cũng có material design look-and-feel trên ios. Nhưng chúng ta vẫn có thể giải quyết vấn đề này bằng cách dùng thư viện ngoài như [Platform Aware Widgets](https://pub.dev/packages/flutter_platform_widgets).
+
+# React Native vs Dart Infographic
+
+Bài viết đi sâu vào so sánh từng khía cạnh giữa react native và flutter xin hẹn lại một dịp khác. Tuy nhiên chúng ta cũng có thể phần nào hiểu được vài nét tương đồng khác biệt cơ bản của flutter và react native qua infographic sau:
+
+Nguồn từ [DZone: React Native vs. Flutter [Infographic]](https://dzone.com/articles/react-native-vs-flutter-infographic)
+
+!["Infographic"](/assets/posts/flutter-intro/flutter-vs-rn-infograph.png)
 
 # Last but not least: Tại sao là flutter?
 
