@@ -19,7 +19,7 @@ toc: true
 
 > “Flutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.” - Google, flutter.dev
 
-[Flutter](https://flutter.dev/) là một cross-platform UI framework của Google, dựa trên 2D graphic engine [Skia](https://skia.org/) và sử dụng ngôn ngữ Dart. Nó được google quảng cáo mạnh từ [I/O 2017](https://events.google.com/io2017/), và được một số công ty lớn trên thế giới dùng để xây dựng sản phẩm như Google (Assistant), Ebay (Ebay cars), Tentcent, Alibaba và ở Việt Nam có [sendo.vn](sendo.vn).
+[Flutter](https://flutter.dev/) là một cross-platform UI framework của Google, dựa trên 2D graphic engine [Skia](https://skia.org/) và sử dụng ngôn ngữ Dart. Nó được google quảng cáo mạnh từ [I/O 2017](https://events.google.com/io2017/), và được một số công ty lớn trên thế giới dùng để xây dựng sản phẩm như Google (Assistant), Ebay (Ebay cars), Tentcent, Alibaba và ở Việt Nam có [sendo.vn](https://itsallwidgets.com/sendo).
 
 Về mặt tổng quát thì flutter cũng tương tự như React đều sử dụng reactive-style views. Tuy nhiên thay vì được transpiled thành naitive widget thì flutter dùng engine Skia để vẽ lại, ngoài ra thì dart có thể được biên dịch thẳng thành native code nên tăng được performance nhờ bỏ đi một tầng cầu nối trung gian giữa JavaScript và native OS code (hay [bridge](https://flutter.dev/docs/get-started/flutter-for/react-native-devs)).
 
