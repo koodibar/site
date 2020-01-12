@@ -19,13 +19,13 @@ toc: true
 
 > “Flutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.” - Google, flutter.dev
 
-[Flutter](https://flutter.dev/) là một cross-platform UI framework của Google, dựa trên 2D graphic engine [Skia](https://skia.org/) và sử dụng ngôn ngữ Dart. Nó được google quảng cáo mạnh [I/O 2017](https://events.google.com/io2017/).
+[Flutter](https://flutter.dev/) là một cross-platform UI framework của Google, dựa trên 2D graphic engine [Skia](https://skia.org/) và sử dụng ngôn ngữ Dart. Nó được google quảng cáo mạnh từ [I/O 2017](https://events.google.com/io2017/).
 
-Về mặt tổng quát thì flutter cũng tương tự như React đều sử dụng reactive-style views. Tuy nhiên thay vì được transpiled thành naitive widget thì flutter dùng engine Skia để vẽ lại, ngoài ra thì dart có thể được biên dịch thẳng thành native code nên tăng được performance nhờ bỏ đi một tầng cầu nối trung gian giữa JavaScript và native OS code (bridge). [<sup>1</sup>](https://flutter.dev/docs/get-started/flutter-for/react-native-devs]).
+Về mặt tổng quát thì flutter cũng tương tự như React đều sử dụng reactive-style views. Tuy nhiên thay vì được transpiled thành naitive widget thì flutter dùng engine Skia để vẽ lại, ngoài ra thì dart có thể được biên dịch thẳng thành native code nên tăng được performance nhờ bỏ đi một tầng cầu nối trung gian giữa JavaScript và native OS code (hay [bridge](https://flutter.dev/docs/get-started/flutter-for/react-native-devs)).
 
 !["Navigation iOS back"](/assets/posts/flutter-intro/navigation-ios-back.gif)
 
-Triết lý của flutter là giữ mọi default behavior của platform ([platform adaptation](https://flutter.dev/docs/resources/platform-adaptations)). Tuỳ từng OS, mà mặc định flutter sẽ giữ nguyên các behavior, transition, typography, gestures đúng với nguyên gốc cuả hệ điều hành. Điều này mang lại cảm giác "native" cho ứng dụng mặc dù flutter không dùng OEM widgets.
+Triết lý của flutter là giữ mọi default behavior của platform ([platform adaptation](https://flutter.dev/docs/resources/platform-adaptations)). Tuỳ từng OS, mà mặc định flutter sẽ giữ nguyên các behavior, transition, typography, gestures đúng với nguyên gốc cuả hệ điều hành. Điều này mang lại cảm giác "native" cho ứng dụng mặc dù flutter không dùng [OEM widgets](https://medium.com/flutter/why-flutter-doesnt-use-oem-widgets-94746e812510).
 
 
 !["Dart"](/assets/posts/flutter-intro/platform.png)
@@ -64,9 +64,9 @@ Nguồn từ [DZone: React Native vs. Flutter [Infographic]](https://dzone.com/a
 + **Biên dịch nhanh**: Flutter cho phép hot-reload code, nó giúp giảm thiểu tối đa thời gian phát triển phần mềm. Ví dụ khi cần thay đổi kích thước của một element thì nó thay đổi real-time. Tuy nhiên với một số thay đổi lớn trong code thì flutter thực sự cần được reload lại toàn bộ.
 - **Lý tưởng cho startups và làm MVP**: 
 Nếu bạn là khởi nghiệp gia và muốn ra được sản phẩm càng nhanh càng tốt thì flutter là một ứng cử viên tốt. Ở đây dùng từ ứng cử viên thì react-native cũng là một lựa chọn. Vì các yếu tố sau:
-    - Rẻ: thay vì để duy trì hai app một cho android và một cho ios thì chúng ta chỉ cần một codebase cho cả hai. Thậm chí bạn chỉ cần 1 developer là đủ.
-    - Hiệu năng cao: so với react native thì flutter có performance cao hơn vì không cần qua một tầng bridge giữa JavaScript và native components.
-    - Đẹp: Có thể dễ dàng tạo ra những ứng dụng đẹp bằng các widgets có sẵn của flutter. Có thể tham khảo một số app được xây dựng bằng flutter ở [It's all widgets](https://itsallwidgets.com/)  
+    - **Rẻ**: thay vì để duy trì hai app một cho android và một cho ios thì chúng ta chỉ cần một codebase cho cả hai. Thậm chí bạn chỉ cần 1 developer là đủ.
+    - **Hiệu năng cao**: so với react native thì flutter có performance cao hơn vì không cần qua một tầng bridge giữa JavaScript và native components.
+    - **Đẹp**: Có thể dễ dàng tạo ra những ứng dụng đẹp bằng các widgets có sẵn của flutter. Có thể tham khảo một số app được xây dựng bằng flutter ở [It's all widgets](https://itsallwidgets.com/)  
     !["Dart"](/assets/posts/flutter-intro/flutter-app-example.gif)
 
 - **Tài liệu kỹ lưỡng**: Documents cuả flutter khá đầy đủ và chi tiết về từng widgets. Đồng thời cũng có có hướng dẫn chi tiết cơ bản cho người mới bắt đầu.
